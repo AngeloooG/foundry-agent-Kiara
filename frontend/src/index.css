@@ -1,15 +1,36 @@
-/* Global resets and layout - Fluent UI handles theming */
+@import "./styles/tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--kiara-color-background);
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  overflow: hidden;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: var(--kiara-color-background);
+  color: var(--kiara-color-text);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 #root {
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
-
-

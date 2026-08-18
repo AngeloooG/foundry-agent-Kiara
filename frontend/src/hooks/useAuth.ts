@@ -33,13 +33,18 @@ export const useAuth = () => {
   const { instance, accounts } = useMsal();
 
   const getAccessToken = useCallback(async (): Promise<string | null> => {
-    if (accounts.length === 0) {
+    const account =
+      instance.getActiveAccount() ??
+      accounts[0] ??
+      null;
+
+    if (!account) {
       return null;
     }
 
     const request = {
       ...tokenRequest,
-      account: accounts[0],
+      account,
     };
 
     try {
@@ -72,8 +77,11 @@ export const useAuth = () => {
   );
 
   const user = useMemo(
-    () => accounts[0],
-    [accounts]
+    () =>
+      instance.getActiveAccount() ??
+      accounts[0] ??
+      null,
+    [accounts, instance],
   );
 
   return useMemo(

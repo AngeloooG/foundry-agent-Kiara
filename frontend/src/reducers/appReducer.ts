@@ -26,6 +26,25 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
           error: null,
         },
       };
+    case 'AUTH_UNAUTHENTICATED':
+      return {
+        ...state,
+        auth: {
+          status: 'unauthenticated',
+          user: null,
+          error: null,
+        },
+      };
+
+    case 'AUTH_ERROR':
+      return {
+        ...state,
+        auth: {
+          status: 'error',
+          user: null,
+          error: action.error,
+        },
+      };
 
     case 'AUTH_TOKEN_EXPIRED':
       return {
@@ -118,19 +137,19 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
       const messageIndex = state.chat.messages.findIndex(
         msg => msg.id === action.messageId
       );
-      
+
       if (messageIndex === -1) {
         // Message not found - return unchanged state
         return state;
       }
-      
+
       // Create new array with updated message
       const updatedMessages = [...state.chat.messages];
       updatedMessages[messageIndex] = {
         ...updatedMessages[messageIndex],
         content: updatedMessages[messageIndex].content + action.content,
       };
-      
+
       return {
         ...state,
         chat: {
@@ -145,18 +164,18 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
       const messageIndex = state.chat.messages.findIndex(
         msg => msg.id === action.messageId
       );
-      
+
       if (messageIndex === -1) {
         return state;
       }
-      
+
       const updatedMessages = [...state.chat.messages];
       const existingAnnotations = updatedMessages[messageIndex].annotations || [];
       updatedMessages[messageIndex] = {
         ...updatedMessages[messageIndex],
         annotations: [...existingAnnotations, ...action.annotations],
       };
-      
+
       return {
         ...state,
         chat: {
@@ -202,7 +221,7 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
           previousResponseId: action.previousResponseId || '',
         },
       };
-      
+
       return {
         ...state,
         chat: {
@@ -236,16 +255,16 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
       const updatedMessages = state.chat.messages.map(msg =>
         msg.id === state.chat.streamingMessageId
           ? {
-              ...msg,
-              more: {
-                ...msg.more,
-                usage: action.usage,
-              },
-              duration: action.usage.duration,
-              retryAttempt: undefined,
-              maxRetries: undefined,
-              activeToolUse: undefined,
-            }
+            ...msg,
+            more: {
+              ...msg.more,
+              usage: action.usage,
+            },
+            duration: action.usage.duration,
+            retryAttempt: undefined,
+            maxRetries: undefined,
+            activeToolUse: undefined,
+          }
           : msg
       );
 

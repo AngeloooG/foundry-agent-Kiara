@@ -1,0 +1,16 @@
+.shell {
+  min-height: 100dvh;
+  background: var(--kiara-color-background);
+  color: var(--kiara-color-text);
+}
+
+.pageContent {
+  min-height: calc(100dvh - var(--kiara-header-height));
+  padding: 2rem 1rem 4rem;
+}
+
+.chatContent {
+  height: calc(100dvh - var(--kiara-header-height));
+  min-height: 0;
+  overflow: hidden;
+}

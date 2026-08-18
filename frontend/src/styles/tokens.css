@@ -1,0 +1,22 @@
+:root {
+  --kiara-header-height: 64px;
+  --kiara-color-background: #f7fafc;
+  --kiara-color-surface: #ffffff;
+  --kiara-color-border: #dde6ef;
+  --kiara-color-text: #11140f;
+  --kiara-color-text-secondary: #5e6b7a;
+  --kiara-color-brand: #123263;
+  --kiara-color-brand-accent: #005b96;
+  --kiara-color-accent: #8cc63f;
+}
+
+:root.dark {
+  --kiara-color-background: #071421;
+  --kiara-color-surface: #101e33;
+  --kiara-color-border: #1e3050;
+  --kiara-color-text: #e8f0f8;
+  --kiara-color-text-secondary: #8fa8c0;
+  --kiara-color-brand: #1e4d95;
+  --kiara-color-brand-accent: #2b7dc0;
+  --kiara-color-accent: #8cc63f;
+}

@@ -1,0 +1,45 @@
+.page {
+  width: min(100%, 1120px);
+  margin-inline: auto;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--kiara-color-brand-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--kiara-color-text);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.description {
+  max-width: 680px;
+  margin-top: 1rem;
+  color: var(--kiara-color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  margin-top: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  background: var(--kiara-color-brand-accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.primaryLink:hover {
+  filter: brightness(1.08);
+}

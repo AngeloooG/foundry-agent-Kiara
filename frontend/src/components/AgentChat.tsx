@@ -27,10 +27,16 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentName, agentDescriptio
 
   // Create service instances
   const apiUrl = import.meta.env.VITE_API_URL || '/api';
-  
+
   const chatService = useMemo(() => {
     return new ChatService(apiUrl, getAccessToken, dispatch);
   }, [apiUrl, getAccessToken, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      chatService.cancelStream();
+    };
+  }, [chatService]);
 
   const handleSendMessage = async (text: string, files?: File[]) => {
     if (chat.status === 'streaming' || chat.status === 'sending') {
@@ -209,7 +215,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentName, agentDescriptio
   return (
     <div className={styles.content}>
       <div className={styles.mainContent}>
-        <ChatInterface 
+        <ChatInterface
           messages={chat.messages}
           status={chat.status}
           error={chat.error}
@@ -255,7 +261,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentName, agentDescriptio
         onDeleteConversation={handleDeleteConversation}
         onLoadMore={handleLoadMoreConversations}
       />
-      
+
       <SettingsPanel
         isOpen={isSettingsOpen}
         onOpenChange={setIsSettingsOpen}

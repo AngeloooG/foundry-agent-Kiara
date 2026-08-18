@@ -1,55 +1,121 @@
-import type { Configuration } from "@azure/msal-browser";
-import { LogLevel } from "@azure/msal-browser";
+import {
+  LogLevel,
+} from "@azure/msal-browser";
+import type {
+  Configuration,
+  RedirectRequest,
+  SilentRequest,
+} from "@azure/msal-browser";
 
-// Environment variables (must be set during build or deployment)
-const clientId = import.meta.env.VITE_ENTRA_SPA_CLIENT_ID;
+function getRequiredEnvironmentVariable(
+  name: string,
+  value: string | undefined,
+): string {
+  const normalizedValue =
+    normalizeEnvironmentVariable(value);
 
-if (!clientId) {
-  throw new Error(
-    "VITE_ENTRA_SPA_CLIENT_ID is not set. This must be provided during build time. " +
-    "For local dev, ensure azd environment is configured and run preprovision hook."
-  );
+  if (!normalizedValue) {
+    throw new Error(
+      `${name} is not set. ` +
+      "This value must be provided during build time.",
+    );
+  }
+
+  return normalizedValue;
 }
 
-// When OBO is enabled, scopes target the backend API app instead of the SPA
-const scopeClientId = import.meta.env.VITE_ENTRA_BACKEND_CLIENT_ID || clientId;
+function normalizeEnvironmentVariable(
+  value: string | undefined,
+): string | undefined {
+  const normalizedValue = value?.trim();
 
-const tenantId = import.meta.env.VITE_ENTRA_TENANT_ID;
+  if (!normalizedValue) {
+    return undefined;
+  }
 
-if (!tenantId) {
-  throw new Error(
-    "VITE_ENTRA_TENANT_ID is not set. This must be provided during build time. " +
-    "For local dev, run setup-local-dev.ps1 to configure from azd environment."
-  );
+  if (
+    normalizedValue.toLowerCase() ===
+    "undefined" ||
+    normalizedValue.toLowerCase() ===
+    "null"
+  ) {
+    return undefined;
+  }
+
+  return normalizedValue;
 }
+
+const clientId =
+  getRequiredEnvironmentVariable(
+    "VITE_ENTRA_SPA_CLIENT_ID",
+    import.meta.env
+      .VITE_ENTRA_SPA_CLIENT_ID,
+  );
+
+const tenantId =
+  getRequiredEnvironmentVariable(
+    "VITE_ENTRA_TENANT_ID",
+    import.meta.env
+      .VITE_ENTRA_TENANT_ID,
+  );
+
+const backendClientId =
+  normalizeEnvironmentVariable(
+    import.meta.env
+      .VITE_ENTRA_BACKEND_CLIENT_ID,
+  );
+
+const scopeClientId =
+  backendClientId ?? clientId;
+
+const chatScope =
+  `api://${scopeClientId}/Chat.ReadWrite`;
 
 export const msalConfig: Configuration = {
   auth: {
-    clientId: clientId,
-    authority: `https://login.microsoftonline.com/${tenantId}`,
-    redirectUri: window.location.origin, // Will be https://<container-app-url> in production
-    postLogoutRedirectUri: window.location.origin,
-    navigateToLoginRequestUrl: false, // Avoid redirect loops
+    clientId,
+    authority:
+      `https://login.microsoftonline.com/${tenantId}`,
+    redirectUri:
+      window.location.origin,
+    postLogoutRedirectUri:
+      window.location.origin,
+    navigateToLoginRequestUrl: false,
   },
+
   cache: {
-    cacheLocation: "localStorage", // Use localStorage for token caching
-    storeAuthStateInCookie: false, // Set to true if IE11 support needed
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false,
   },
+
   system: {
     loggerOptions: {
-      logLevel: import.meta.env.DEV ? LogLevel.Info : LogLevel.Warning,
-      loggerCallback: (level, message, containsPii) => {
-        if (containsPii) return;
+      logLevel: import.meta.env.DEV
+        ? LogLevel.Info
+        : LogLevel.Warning,
+
+      loggerCallback: (
+        level,
+        message,
+        containsPii,
+      ) => {
+        if (containsPii) {
+          return;
+        }
+
         switch (level) {
           case LogLevel.Error:
             console.error(message);
             break;
+
           case LogLevel.Warning:
             console.warn(message);
             break;
+
           case LogLevel.Info:
             console.info(message);
             break;
+
           case LogLevel.Verbose:
             console.debug(message);
             break;
@@ -59,12 +125,27 @@ export const msalConfig: Configuration = {
   },
 };
 
-// API permission scope (will match app registration in Step 08)
-export const loginRequest = {
-  scopes: [`api://${scopeClientId}/Chat.ReadWrite`],
+export const loginRequest:
+  RedirectRequest = {
+  scopes: [chatScope],
 };
 
-export const tokenRequest = {
-  scopes: [`api://${scopeClientId}/Chat.ReadWrite`],
-  forceRefresh: false, // Use cached token if valid
+export const tokenRequest:
+  Omit<SilentRequest, "account"> = {
+  scopes: [chatScope],
+  forceRefresh: false,
 };
+
+if (import.meta.env.DEV) {
+  console.info(
+    "[Auth configuration]",
+    {
+      tenantId,
+      spaClientId: clientId,
+      backendClientId:
+        backendClientId ??
+        "(using SPA client ID)",
+      scope: chatScope,
+    },
+  );
+}
