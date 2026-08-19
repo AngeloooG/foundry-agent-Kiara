@@ -1,0 +1,10 @@
+.section { width: min(100%, 1240px); margin-inline: auto; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+.card { position: relative; min-height: 220px; overflow: hidden; padding: 1.35rem; border: 1px solid var(--kiara-color-border); border-radius: 18px; background: var(--kiara-color-surface); box-shadow: var(--kiara-shadow-small); }
+.card::after { content: ""; position: absolute; inset: auto -35px -55px auto; width: 120px; height: 120px; border-radius: 50%; background: color-mix(in srgb, var(--kiara-color-brand-soft) 10%, transparent); }
+.number { position: absolute; top: 1rem; right: 1rem; color: var(--kiara-color-text-muted); font-family: var(--kiara-font-display); font-size: 1.1rem; }
+.icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; color: var(--kiara-color-brand-accent); background: color-mix(in srgb, var(--kiara-color-brand-soft) 14%, transparent); }
+.card h3 { margin: 1.2rem 0 0.55rem; color: var(--kiara-color-text); font-size: 1rem; }
+.card p { margin: 0; color: var(--kiara-color-text-secondary); font-size: 0.85rem; line-height: 1.65; }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .card { min-height: 190px; } }

@@ -1,0 +1,10 @@
+.section { width: min(100%, 1240px); margin-inline: auto; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; margin-top: 2.5rem; }
+.card { padding: 1.6rem; border: 1px solid var(--kiara-color-border); border-radius: 20px; background: var(--kiara-color-surface); box-shadow: var(--kiara-shadow-small); }
+.icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; color: #fff; background: linear-gradient(135deg, var(--kiara-color-brand-accent), var(--kiara-color-brand)); }
+.card h3 { margin: 1.2rem 0 0.5rem; color: var(--kiara-color-text); font-family: var(--kiara-font-display); font-size: 1.55rem; font-weight: 400; }
+.statement { min-height: 52px; margin: 0; color: var(--kiara-color-text-secondary); font-size: 0.88rem; line-height: 1.6; }
+.card ul { display: grid; gap: 0.65rem; margin: 1.25rem 0 0; padding: 1.1rem 0 0; border-top: 1px solid var(--kiara-color-border); list-style: none; }
+.card li { position: relative; padding-left: 1.15rem; color: var(--kiara-color-text-secondary); font-size: 0.8rem; }
+.card li::before { content: ""; position: absolute; top: 0.42rem; left: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--kiara-color-accent); }
+@media (max-width: 850px) { .grid { grid-template-columns: 1fr; } .statement { min-height: 0; } }

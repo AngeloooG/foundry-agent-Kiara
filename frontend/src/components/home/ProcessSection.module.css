@@ -1,0 +1,11 @@
+.section { width: min(100%, 1320px); margin-inline: auto; padding: clamp(2rem, 5vw, 4rem); border: 1px solid var(--kiara-color-border); border-radius: 28px; background: var(--kiara-color-surface-muted); }
+.timeline { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; margin: 3rem 0 0; padding: 0; list-style: none; }
+.step { position: relative; padding: 0 1rem; text-align: center; }
+.connector { position: absolute; top: 20px; left: 0; width: 100%; height: 1px; background: var(--kiara-color-border); }
+.step:first-child .connector { left: 50%; width: 50%; }
+.step:last-child .connector { width: 50%; }
+.badge { position: relative; z-index: 1; width: 40px; height: 40px; display: grid; place-items: center; margin-inline: auto; border: 1px solid var(--kiara-color-border); border-radius: 50%; color: var(--kiara-color-brand-accent); background: var(--kiara-color-surface); font-weight: 750; box-shadow: var(--kiara-shadow-small); }
+.icon { width: 44px; height: 44px; display: grid; place-items: center; margin: 1.25rem auto 0; color: var(--kiara-color-brand-accent); }
+.step h3 { margin: 0.45rem 0; color: var(--kiara-color-text); font-size: 0.92rem; }
+.step p { margin: 0; color: var(--kiara-color-text-secondary); font-size: 0.76rem; line-height: 1.6; }
+@media (max-width: 900px) { .timeline { grid-template-columns: 1fr; gap: 1.2rem; } .step { display: grid; grid-template-columns: 42px 44px 1fr; align-items: start; gap: 0.8rem; padding: 0; text-align: left; } .connector { top: 40px; left: 20px !important; width: 1px !important; height: calc(100% + 1.2rem); } .step:last-child .connector { display: none; } .badge, .icon { margin: 0; } .step h3 { margin: 0.1rem 0 0.35rem; } .step p { grid-column: 3; } }
