@@ -1,0 +1,161 @@
+.content {
+  max-width: 700px;
+}
+
+.statusBadge {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--kiara-color-accent) 35%, var(--kiara-color-border));
+  border-radius: 999px;
+  color: var(--kiara-color-text-secondary);
+  background: color-mix(in srgb, var(--kiara-color-accent) 8%, var(--kiara-color-surface));
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--kiara-color-success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--kiara-color-success) 18%, transparent);
+}
+
+.statusDivider {
+  width: 1px;
+  height: 14px;
+  background: var(--kiara-color-border);
+}
+
+.eyebrow {
+  margin: 0 0 0.8rem;
+  color: var(--kiara-color-brand-accent);
+  font-size: 0.74rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  max-width: 720px;
+  margin: 0;
+  color: var(--kiara-color-text);
+  font-family: var(--kiara-font-display);
+  font-size: clamp(2.65rem, 5.2vw, 5rem);
+  font-weight: 400;
+  line-height: 0.99;
+  letter-spacing: -0.035em;
+}
+
+.highlight {
+  color: var(--kiara-color-brand-accent);
+  font-style: italic;
+}
+
+.description {
+  max-width: 650px;
+  margin: 1.5rem 0 0;
+  color: var(--kiara-color-text-secondary);
+  font-size: clamp(1rem, 1.45vw, 1.14rem);
+  line-height: 1.75;
+}
+
+.assurances {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--kiara-color-text-secondary);
+  font-size: 0.88rem;
+}
+
+.assurances li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.assurances svg {
+  color: var(--kiara-color-accent);
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.primaryAction,
+.secondaryAction {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.primaryAction {
+  color: #fff;
+  background: linear-gradient(135deg, var(--kiara-color-brand-accent), var(--kiara-color-brand));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--kiara-color-brand-accent) 26%, transparent);
+}
+
+.secondaryAction {
+  border: 1px solid var(--kiara-color-border);
+  color: var(--kiara-color-text);
+  background: color-mix(in srgb, var(--kiara-color-surface) 88%, transparent);
+}
+
+.primaryAction:hover,
+.secondaryAction:hover {
+  transform: translateY(-2px);
+}
+
+.primaryAction:hover {
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--kiara-color-brand-accent) 32%, transparent);
+}
+
+.secondaryAction:hover {
+  background: var(--kiara-color-surface-muted);
+}
+
+.primaryAction:focus-visible,
+.secondaryAction:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--kiara-color-brand-soft) 68%, transparent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: clamp(2.45rem, 12vw, 3.55rem);
+  }
+
+  .actions {
+    align-items: stretch;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primaryAction,
+  .secondaryAction {
+    transition: none;
+  }
+}

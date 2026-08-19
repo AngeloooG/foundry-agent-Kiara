@@ -1,0 +1,32 @@
+.wrapper {
+  margin-top: 2rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--kiara-color-text-muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--kiara-color-border);
+  border-radius: 999px;
+  color: var(--kiara-color-text-secondary);
+  background: color-mix(in srgb, var(--kiara-color-surface) 84%, transparent);
+  font-size: 0.72rem;
+  font-weight: 600;
+}

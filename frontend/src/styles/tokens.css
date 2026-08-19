@@ -1,22 +1,43 @@
 :root {
   --kiara-header-height: 64px;
+  --kiara-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --kiara-font-display: "DM Serif Display", Georgia, serif;
+
   --kiara-color-background: #f7fafc;
   --kiara-color-surface: #ffffff;
-  --kiara-color-border: #dde6ef;
+  --kiara-color-surface-muted: #eef3f8;
+  --kiara-color-border: #dbe5ef;
   --kiara-color-text: #11140f;
   --kiara-color-text-secondary: #5e6b7a;
+  --kiara-color-text-muted: #8797a8;
   --kiara-color-brand: #123263;
   --kiara-color-brand-accent: #005b96;
+  --kiara-color-brand-soft: #7cbce3;
   --kiara-color-accent: #8cc63f;
+  --kiara-color-success: #22a65a;
+
+  --kiara-shadow-small: 0 2px 8px rgb(18 50 99 / 7%);
+  --kiara-shadow-medium: 0 12px 32px rgb(18 50 99 / 13%);
+  --kiara-shadow-large: 0 24px 70px rgb(18 50 99 / 12%);
+  --kiara-shadow-hero: 0 30px 80px rgb(18 50 99 / 20%);
 }
 
 :root.dark {
   --kiara-color-background: #071421;
   --kiara-color-surface: #101e33;
-  --kiara-color-border: #1e3050;
+  --kiara-color-surface-muted: #16233d;
+  --kiara-color-border: #233653;
   --kiara-color-text: #e8f0f8;
-  --kiara-color-text-secondary: #8fa8c0;
+  --kiara-color-text-secondary: #9ab0c5;
+  --kiara-color-text-muted: #6f89a1;
   --kiara-color-brand: #1e4d95;
-  --kiara-color-brand-accent: #2b7dc0;
-  --kiara-color-accent: #8cc63f;
+  --kiara-color-brand-accent: #48a4dc;
+  --kiara-color-brand-soft: #7cbce3;
+  --kiara-color-accent: #9bd34f;
+  --kiara-color-success: #43c879;
+
+  --kiara-shadow-small: 0 2px 10px rgb(0 0 0 / 24%);
+  --kiara-shadow-medium: 0 14px 34px rgb(0 0 0 / 34%);
+  --kiara-shadow-large: 0 26px 72px rgb(0 0 0 / 38%);
+  --kiara-shadow-hero: 0 34px 88px rgb(0 0 0 / 48%);
 }
