@@ -1,0 +1,10 @@
+.page { position: relative; min-height: 70dvh; display: grid; place-content: center; justify-items: center; overflow: hidden; padding: 2rem; border: 1px solid var(--kiara-color-border); border-radius: 26px; background: linear-gradient(145deg, var(--kiara-color-surface), var(--kiara-color-surface-muted)); text-align: center; }
+.code { position: absolute; inset: 50% auto auto 50%; color: color-mix(in srgb, var(--kiara-color-brand-soft) 10%, transparent); font-family: var(--kiara-font-display); font-size: clamp(12rem, 35vw, 30rem); line-height: 1; transform: translate(-50%, -50%); pointer-events: none; }
+.page > span { position: relative; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: var(--kiara-color-brand-accent); }
+.page > p { position: relative; margin: 1.2rem 0 0.45rem; color: var(--kiara-color-brand-accent); font-size: 0.67rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; }
+.page h1 { position: relative; max-width: 720px; margin: 0; color: var(--kiara-color-text); font-family: var(--kiara-font-display); font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 400; }
+.page > strong { position: relative; max-width: 620px; margin-top: 0.9rem; color: var(--kiara-color-text-secondary); font-size: 0.85rem; font-weight: 400; line-height: 1.7; }
+.page > div:last-child { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 1.5rem; }
+.page a { min-height: 44px; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 0.9rem; border-radius: 11px; font-size: 0.75rem; font-weight: 750; text-decoration: none; }
+.primary { color: #fff; background: var(--kiara-color-brand-accent); }
+.secondary { border: 1px solid var(--kiara-color-border); color: var(--kiara-color-text); background: var(--kiara-color-surface); }

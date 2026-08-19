@@ -1,0 +1,19 @@
+.page { width: 100%; display: grid; gap: clamp(3rem, 7vw, 5.5rem); }
+.hero { width: min(100%, 1240px); margin-inline: auto; padding: clamp(2rem, 6vw, 4.5rem); border: 1px solid var(--kiara-color-border); border-radius: 26px; background: radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--kiara-color-brand-soft) 24%, transparent), transparent 34%), linear-gradient(135deg, var(--kiara-color-surface), var(--kiara-color-surface-muted)); box-shadow: var(--kiara-shadow-medium); }
+.hero > span { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 15px; color: #fff; background: var(--kiara-color-brand-accent); }
+.hero > p { margin: 1.2rem 0 0.55rem; color: var(--kiara-color-brand-accent); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.13em; text-transform: uppercase; }
+.hero h1 { margin: 0; color: var(--kiara-color-text); font-family: var(--kiara-font-display); font-size: clamp(2.6rem, 6vw, 5rem); font-weight: 400; line-height: 1; }
+.hero > strong { display: block; max-width: 700px; margin-top: 1rem; color: var(--kiara-color-text-secondary); font-size: 1rem; font-weight: 400; line-height: 1.7; }
+.hero dl { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 1.6rem 0 0; }
+.hero dl div { min-width: 150px; padding: 0.8rem 1rem; border: 1px solid var(--kiara-color-border); border-radius: 13px; background: color-mix(in srgb, var(--kiara-color-surface) 82%, transparent); }
+.hero dt { color: var(--kiara-color-brand-accent); font-family: var(--kiara-font-display); font-size: 1.6rem; }
+.hero dd { margin: 0.15rem 0 0; color: var(--kiara-color-text-muted); font-size: 0.63rem; }
+.content { width: min(100%, 1120px); margin-inline: auto; display: grid; gap: 1rem; }
+.results { color: var(--kiara-color-text-secondary); font-size: 0.75rem; }
+.results strong { color: var(--kiara-color-text); }
+.empty { min-height: 280px; display: grid; place-content: center; justify-items: center; gap: 0.6rem; padding: 2rem; border: 1px dashed var(--kiara-color-border); border-radius: 18px; color: var(--kiara-color-text-secondary); text-align: center; }
+.empty svg { width: 38px; height: 38px; color: var(--kiara-color-text-muted); }
+.empty h2, .empty p { margin: 0; }
+.empty h2 { color: var(--kiara-color-text); font-family: var(--kiara-font-display); font-size: 1.7rem; font-weight: 400; }
+.empty button { min-height: 40px; margin-top: 0.4rem; padding: 0.55rem 0.85rem; border: 0; border-radius: 10px; color: #fff; background: var(--kiara-color-brand-accent); cursor: pointer; }
+@media (max-width: 620px) { .hero { padding: 1.5rem; border-radius: 20px; } .hero dl { display: grid; grid-template-columns: 1fr; } }
