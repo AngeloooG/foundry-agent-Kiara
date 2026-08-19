@@ -1,0 +1,18 @@
+.card { min-width: 0; display: flex; flex-direction: column; min-height: 390px; padding: 1.35rem; border: 1px solid var(--kiara-color-border); border-radius: 20px; background: var(--kiara-color-surface); box-shadow: var(--kiara-shadow-small); transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease; }
+.card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--kiara-color-brand-accent) 38%, var(--kiara-color-border)); box-shadow: var(--kiara-shadow-medium); }
+.topLine { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; }
+.status { padding: 0.27rem 0.55rem; border-radius: 999px; font-size: 0.64rem; font-weight: 750; }
+.published { color: var(--kiara-color-success); background: color-mix(in srgb, var(--kiara-color-success) 11%, transparent); }
+.draft { color: var(--kiara-color-text-secondary); background: var(--kiara-color-surface-muted); }
+.area { overflow: hidden; color: var(--kiara-color-text-muted); font-size: 0.64rem; text-overflow: ellipsis; white-space: nowrap; }
+.card h2 { margin: 1.2rem 0 0.7rem; color: var(--kiara-color-text); font-family: var(--kiara-font-display); font-size: 1.45rem; font-weight: 400; line-height: 1.17; }
+.description { margin: 0; color: var(--kiara-color-text-secondary); font-size: 0.82rem; line-height: 1.65; }
+.impact { margin: 1rem 0 0; color: var(--kiara-color-brand-accent); font-size: 0.8rem; font-weight: 750; line-height: 1.45; }
+.technologies { display: flex; flex-wrap: wrap; gap: 0.38rem; margin-top: 1rem; }
+.technologies span { padding: 0.25rem 0.5rem; border: 1px solid var(--kiara-color-border); border-radius: 999px; color: var(--kiara-color-text-secondary); font-size: 0.64rem; }
+.meta { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: auto 0 0; padding-top: 1.25rem; }
+.meta div { min-width: 0; }
+.meta dt { display: flex; align-items: center; gap: 0.3rem; color: var(--kiara-color-text-muted); font-size: 0.62rem; }
+.meta dd { overflow: hidden; margin: 0.25rem 0 0; color: var(--kiara-color-text); font-size: 0.72rem; text-overflow: ellipsis; white-space: nowrap; }
+.link { display: inline-flex; align-items: center; gap: 0.35rem; width: fit-content; margin-top: 1.2rem; color: var(--kiara-color-brand-accent); font-size: 0.76rem; font-weight: 750; text-decoration: none; }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
