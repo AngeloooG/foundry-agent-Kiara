@@ -1,0 +1,6 @@
+.section { padding: clamp(1.35rem, 3vw, 2rem); border: 1px solid var(--kiara-color-border); border-radius: 18px; background: var(--kiara-color-surface); box-shadow: var(--kiara-shadow-small); break-inside: avoid; }
+.accent { background: linear-gradient(145deg, color-mix(in srgb, var(--kiara-color-brand-soft) 10%, var(--kiara-color-surface)), var(--kiara-color-surface)); }
+.eyebrow { margin: 0 0 0.45rem; color: var(--kiara-color-brand-accent); font-size: 0.65rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; }
+.section h2 { margin: 0; color: var(--kiara-color-text); font-family: var(--kiara-font-display); font-size: clamp(1.55rem, 2.8vw, 2.1rem); font-weight: 400; }
+.content { margin-top: 0.85rem; color: var(--kiara-color-text-secondary); font-size: 0.88rem; line-height: 1.78; }
+.content p { margin: 0; }

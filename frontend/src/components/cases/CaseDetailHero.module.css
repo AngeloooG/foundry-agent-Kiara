@@ -1,0 +1,27 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.6rem, 5vw, 4rem);
+  border: 1px solid var(--kiara-color-border);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 90% 0%, color-mix(in srgb, var(--kiara-color-brand-soft) 22%, transparent), transparent 34%),
+    linear-gradient(135deg, var(--kiara-color-surface), var(--kiara-color-surface-muted));
+  box-shadow: var(--kiara-shadow-medium);
+}
+
+.topLine { display: flex; align-items: center; gap: 0.65rem; }
+.status { padding: 0.3rem 0.6rem; border-radius: 999px; font-size: 0.66rem; font-weight: 750; }
+.published { color: var(--kiara-color-success); background: color-mix(in srgb, var(--kiara-color-success) 11%, transparent); }
+.draft { color: var(--kiara-color-text-secondary); background: var(--kiara-color-background); }
+.area { color: var(--kiara-color-text-muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.hero h1 { max-width: 950px; margin: 1.25rem 0 0; color: var(--kiara-color-text); font-family: var(--kiara-font-display); font-size: clamp(2.35rem, 5vw, 4.75rem); font-weight: 400; line-height: 1.02; letter-spacing: -0.03em; }
+.impact { max-width: 820px; margin: 1.25rem 0 0; color: var(--kiara-color-brand-accent); font-size: clamp(1rem, 1.7vw, 1.28rem); font-weight: 750; line-height: 1.5; }
+.description { max-width: 780px; margin: 0.8rem 0 0; color: var(--kiara-color-text-secondary); line-height: 1.7; }
+.metadata { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; margin: 2rem 0 0; }
+.metadata div { min-width: 0; padding: 0.9rem; border: 1px solid var(--kiara-color-border); border-radius: 14px; background: color-mix(in srgb, var(--kiara-color-surface) 82%, transparent); }
+.metadata dt { display: flex; align-items: center; gap: 0.35rem; color: var(--kiara-color-text-muted); font-size: 0.64rem; }
+.metadata dd { overflow: hidden; margin: 0.45rem 0 0; color: var(--kiara-color-text); font-size: 0.78rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.metadata small { display: block; overflow: hidden; margin-top: 0.2rem; color: var(--kiara-color-text-secondary); font-size: 0.62rem; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 900px) { .metadata { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .metadata { grid-template-columns: 1fr; } }
