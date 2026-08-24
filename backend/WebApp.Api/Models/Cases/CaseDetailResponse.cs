@@ -1,0 +1,28 @@
+namespace WebApp.Api.Models.Cases;
+
+public sealed record CaseDetailResponse(
+    string Id,
+    string Title,
+    string? Client,
+    string? Specialist,
+    string? RegisteredAt,
+    string? Industry,
+    string? Location,
+    string? CompanySize,
+    string? ProductContext,
+    string? Phase,
+    string Status,
+    string? ExecutiveSummary,
+    string? Problem,
+    string? Solution,
+    string? StrategicReflection,
+    string? ConsultativeContent,
+    IReadOnlyList<string> Technologies,
+    IReadOnlyList<string> Tags,
+    IReadOnlyList<string> Results,
+    IReadOnlyList<string> Lessons,
+    IReadOnlyList<string> Risks,
+    IReadOnlyList<string> Innovations,
+    IReadOnlyList<string> Observations,
+    IReadOnlyList<string> ImplementedSolutions,
+    string? DocumentUrl);

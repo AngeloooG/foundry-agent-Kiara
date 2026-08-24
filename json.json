@@ -1,0 +1,791 @@
+{
+    "Portada": {
+        "NombreDeProyecto": "Proyecto Rio Supermarket",
+        "logoCliente": "",
+        "NombreGerenteDeCuenta1": ""
+    },
+    "QuienesSomos": {
+        "NombreDeEmpresa": "Rio Supermarket",
+        "NombreCliente1": ""
+    },
+    "PersonasDeContacto": {
+        "NombreGerenteDeCuenta2": ""
+    },
+    "Abstract": {
+        "Abstract": "Rio Supermarket, una cadena del sector de alimentación, enfrenta desafíos para fijar precios competitivos debido a la publicación de ofertas dinámicas en redes sociales con precios incrustados en imágenes, lo que dificulta su lectura automatizada y genera procesos manuales lentos y riesgos de bloqueo tecnológico. La solución propuesta es un pipeline inteligente basado en Microsoft Azure y Power Platform que automatiza la ingesta controlada de imágenes desde Instagram, extrae precios mediante IA avanzada, orquesta y persiste los datos en SharePoint, y presenta un dashboard ejecutivo en Power BI. Esto permitirá a Rio Supermarket obtener inteligencia competitiva en tiempo real, anticiparse a movimientos del mercado, escalar la cobertura sin costos adicionales y contar con un repositorio histórico trazable, mejorando significativamente la precisión, estabilidad y eficiencia en la gestión de precios."
+    },
+    "CasosDeExito": {
+        "ListaDeCasosDeExito_CE": [
+            {
+                "NombreDelCliente_CE": "Grupo Leti",
+                "Descripcion_CE": "Automatización del proceso de gestión de aceptación de políticas de seguridad de la información mediante Power Automate, Microsoft Forms y SharePoint Online para sustituir el envío manual de correos.",
+                "Resultado_CE": "Cumplimiento del 100% del proyecto con una gestión más eficiente, trazable y segura del proceso de aceptación."
+            },
+            {
+                "NombreDelCliente_CE": "Mercantil C.A. Banco Universal",
+                "Descripcion_CE": "Implementación de un MVP de IA legal para automatizar la gestión de documentos en procesos de liberaciones, créditos e hipotecas usando Azure OpenAI, Power Automate y Power Apps.",
+                "Resultado_CE": "Reducción del tiempo de generación de plantillas en un 92%, optimización de recursos, disminución de errores humanos y mejora en la protección de datos sensibles."
+            },
+            {
+                "NombreDelCliente_CE": "CAF",
+                "Descripcion_CE": "Desarrollo de un MVP Cognidoc que permite consultas documentales internas mediante lenguaje natural con respuestas contextualizadas, usando Azure OpenAI GPT-4.1, Azure AI Search y Microsoft Entra ID.",
+                "Resultado_CE": "Entrega de una solución funcional que cumple el alcance previsto y establece una base para evolución y escalabilidad futura."
+            }
+        ]
+    },
+    "ResumenEjecutivo": {
+        "Introduccion_RE": "Rio Supermarket, cadena del sector de Alimentación y Supermercados, enfrenta un desafío crítico en la fijación de precios competitivos frente a competidores que publican ofertas dinámicas en redes sociales como Instagram, donde los precios se encuentran incrustados en imágenes gráficas y no en texto, imposibilitando su lectura automatizada mediante herramientas convencionales. Este escenario obliga a los analistas de precios a realizar revisiones manuales, perfil por perfil, consumiendo horas de trabajo y retrasando la toma de decisiones estratégicas. Adicionalmente, los intentos de automatización mediante scraping han resultado inestables debido a los bloqueos sistemáticos por parte de Meta. Ante esta problemática, se propone un pipeline inteligente de inteligencia competitiva de precios, construido íntegramente sobre el ecosistema Microsoft Azure y Power Platform, que permite la ingesta oficial de imágenes desde Instagram a través de la Meta Graph API, la extracción automatizada de precios mediante visión artificial con Azure OpenAI GPT-4o, la orquestación del flujo con Power Automate Premium, y la visualización ejecutiva en tiempo real a través de Power BI. Esta solución transforma un proceso manual, lento e inestable en un pipeline automatizado, seguro y escalable, dotando al equipo de pricing de Rio Supermarket de inteligencia competitiva ágil y confiable para la toma de decisiones.",
+        "ListaDeObjetivos_RE": [
+            {
+                "Objetivo_RE": "Automatizar la ingesta de publicaciones de precios desde perfiles públicos de Instagram de competidores (ej. @gama_ve, @plaza_ve) mediante la Meta Graph API oficial, eliminando el proceso manual de revisión perfil por perfil y reduciendo el riesgo de bloqueos por parte de Meta, elevando la tasa de éxito de ingesta de menos del 30% a un nivel igual o superior al 95%."
+            },
+            {
+                "Objetivo_RE": "Implementar un motor de extracción de precios basado en visión artificial con Azure OpenAI GPT-4o, capaz de identificar con una precisión igual o superior al 90% el nombre del producto, precio, unidad de medida, competidor y fecha de publicación a partir de imágenes con diseños gráficos complejos, donde el OCR tradicional no es efectivo."
+            },
+            {
+                "Objetivo_RE": "Orquestar el pipeline completo de inteligencia competitiva mediante Power Automate Premium, garantizando la validación, registro estructurado de datos en SharePoint Online y el envío de alertas proactivas cuando un competidor publique un precio inferior al umbral definido por Rio Supermarket."
+            },
+            {
+                "Objetivo_RE": "Centralizar los datos de inteligencia competitiva en una Lista de SharePoint Online como fuente de verdad única, estructurada por competidor, producto, precio, unidad, fecha y URL de imagen fuente, accesible para el equipo de pricing sin requerir infraestructura de base de datos adicional."
+            },
+            {
+                "Objetivo_RE": "Proveer al equipo directivo y de pricing de Rio Supermarket un dashboard ejecutivo en Power BI con comparativa de precios por competidor y producto, alertas de precios inferiores, tendencias históricas semanales y segmentación por categoría, actualizado automáticamente con cada ejecución del pipeline."
+            },
+            {
+                "Objetivo_RE": "Garantizar la seguridad de producción del pipeline mediante Azure Key Vault para el almacenamiento de credenciales sensibles (Access Token de Meta Graph API, API Key de Azure OpenAI y cadenas de conexión de Azure Storage), asegurando que ninguna credencial quede expuesta en texto plano en la configuración de la Function App."
+            },
+            {
+                "Objetivo_RE": "Asegurar la visibilidad operativa y trazabilidad completa del pipeline mediante Application Insights, permitiendo la detección proactiva de fallos, errores de procesamiento de imágenes y anomalías en la ejecución del timer trigger, sin necesidad de intervención manual."
+            }
+        ]
+    },
+    "NecesidadDelCliente": {
+        "Descripcion_NC": "Rio Supermarket enfrenta una brecha crítica en su capacidad de monitoreo competitivo de precios. Los competidores publican ofertas dinámicas en Instagram donde los precios están incrustados en imágenes gráficas, imposibilitando su lectura automatizada mediante métodos convencionales. El proceso actual depende enteramente de la revisión manual de perfiles por parte de un analista, quien dedica entre 3 y 5 horas diarias a anotar precios en Excel, generando información rezagada entre 24 y 48 horas respecto a los movimientos del mercado.",
+        "ProblemaNegocio_NC": "Rio Supermarket no cuenta con un mecanismo confiable, automatizado y oportuno para capturar la inteligencia de precios publicada por sus competidores en redes sociales. La naturaleza gráfica de las publicaciones promocionales en Instagram, combinada con las restricciones de acceso impuestas por Meta que bloquean los intentos de scraping convencional (con una tasa de éxito inferior al 30%), hace que el proceso de monitoreo sea manual, lento, propenso a errores y estratégicamente ineficiente. Más del 60% de las decisiones de pricing se toman con datos no actualizados el mismo día, exponiendo a la cadena a ciclos de pérdida de competitividad medibles.",
+        "Impacto_NC": "El impacto del problema se manifiesta en tres dimensiones críticas para el negocio. Estratégicamente, Rio Supermarket opera con una ventana de rezago de 24 a 48 horas en su inteligencia competitiva, lo que equivale a perder entre 1 y 2 ciclos de compra diarios con precios potencialmente fuera de mercado. Financieramente, el proceso manual consume entre 60 y 100 horas/mes de trabajo analítico de bajo valor, con un costo operativo directo estimado entre $480 y $1.200 USD mensuales, sin considerar el costo de oportunidad asociado a decisiones de pricing tardías. Operativamente, el ciclo completo de monitoreo tarda entre 4 y 6 horas por jornada, con una tasa de error en captura manual de datos de entre 10% y 15%, y sin una alternativa tecnológica estable que supere las restricciones de Meta.",
+        "Causa_NC": "La causa raíz del problema es la ausencia de una solución tecnológica capaz de interpretar precios incrustados en imágenes promocionales publicadas en Instagram, sin depender de scraping directo de la plataforma. Los competidores han migrado su comunicación de ofertas a formatos visuales dinámicos (stories, posts gráficos) donde el precio forma parte del diseño, no del texto, lo que invalida las herramientas de extracción de datos convencionales. Ante esta realidad, Rio Supermarket no ha podido escalar ni automatizar su proceso de inteligencia competitiva, manteniéndolo atado a la capacidad y disponibilidad de un analista humano.",
+        "ListaDeConsecuencias_NC": [
+            {
+                "Consecuencia_NC": "Pérdida de competitividad en ventanas críticas de compra: con un rezago de 24 a 48 horas en la actualización de precios, Rio Supermarket expone al menos 1 a 2 ciclos de compra diarios donde sus precios publicados pueden estar fuera de mercado frente a la competencia."
+            },
+            {
+                "Consecuencia_NC": "Subutilización del talento analítico: el analista de precios destina entre 3 y 5 horas diarias a tareas operativas de bajo valor (revisión manual, anotación y consolidación en Excel), limitando su capacidad para generar análisis estratégicos que impacten directamente en la rentabilidad del negocio."
+            },
+            {
+                "Consecuencia_NC": "Decisiones de pricing basadas en datos desactualizados: más del 60% de las decisiones de fijación de precios se toman sin información del mismo día, incrementando el riesgo de establecer precios que no reflejen la realidad competitiva del mercado en tiempo real."
+            },
+            {
+                "Consecuencia_NC": "Costo operativo recurrente y evitable: el proceso manual representa un gasto mensual estimado entre $480 y $1.200 USD en horas de analista, un costo que no genera ventaja competitiva sostenible y que podría redirigirse hacia actividades de mayor valor estratégico."
+            },
+            {
+                "Consecuencia_NC": "Alta tasa de error en la captura de datos: el proceso manual de anotación de precios presenta una tasa de error estimada entre 10% y 15%, lo que introduce imprecisiones en la base de datos de pricing y puede derivar en decisiones comerciales incorrectas."
+            },
+            {
+                "Consecuencia_NC": "Inestabilidad tecnológica por dependencia de scraping: los intentos de automatización mediante scraping de Instagram resultan en bloqueos por parte de Meta, con una tasa de éxito inferior al 30%, generando una dependencia operativa frágil y sin continuidad garantizada."
+            },
+            {
+                "Consecuencia_NC": "Ausencia de visibilidad ejecutiva en tiempo real: la falta de un dashboard centralizado y actualizado impide que el equipo de pricing acceda a inteligencia competitiva de forma oportuna, fragmentando la toma de decisiones y generando silos de información entre el análisis y la estrategia comercial."
+            }
+        ]
+    },
+    "EstadoActualVsNuevaRealidad": {
+        "ProblemaEstrategicoEA": "Rio Supermarket toma decisiones de precios con información rezagada entre 24 y 48 horas respecto a los movimientos de la competencia, generando una ventana de pérdida de competitividad estimada en 1–2 ciclos de compra diarios y más del 60% de decisiones basadas en datos no actualizados el mismo día.",
+        "ResultadoEstrategicoNR": "Rio Supermarket dispondrá de inteligencia de precios de la competencia actualizada en tiempo cuasi-real (< 1 hora de latencia), permitiendo que ≥80% de las decisiones de pricing se basen en datos del mismo día, reduciendo la ventana de exposición a precios fuera de mercado en ≥90%.",
+        "ProblemaFinancieroEA": "Un analista dedica entre 3 y 5 horas diarias revisando manualmente perfiles de Instagram, con un costo operativo mensual estimado entre $480 y $1,200 USD, además del costo de oportunidad por decisiones de precios tardías.",
+        "ResultadoFinancieroNR": "El proceso de monitoreo se automatiza, reduciendo el tiempo manual a 15–30 minutos diarios y recuperando ≥80 horas/mes de trabajo analítico, con un ahorro operativo estimado entre $640 y $960 USD mensuales en horas de analista.",
+        "ProblemaOperativoEA": "El ciclo completo de monitoreo es manual, tarda entre 4 y 6 horas diarias, es propenso a errores humanos con una tasa de error del 10–15%, y los intentos de automatización vía scraping tienen una tasa de éxito inferior al 30%.",
+        "ResultadoOperativoNR": "Se implementa un pipeline automatizado con tasa de precisión en extracción de datos ≥90%, eliminando la dependencia de scraping y reduciendo errores de captura a menos del 2%, transformando al analista en auditor de resultados."
+    },
+    "MetricaDeExitoEsperadas": {
+        "ListaDeKPIs": [
+            {
+                "NombreDelKPI_MEE": "Reducción del tiempo de monitoreo diario",
+                "DescripcionKPI_MEE": "Mide la disminución del tiempo que un analista dedica a revisar precios de la competencia, pasando de un proceso manual de 3-5 horas a una revisión ejecutiva automatizada de 30 minutos o menos, optimizando la eficiencia operativa."
+            },
+            {
+                "NombreDelKPI_MEE": "Precisión en la extracción de precios desde imágenes",
+                "DescripcionKPI_MEE": "Evalúa el porcentaje de precios correctamente identificados por la inteligencia artificial en imágenes promocionales, asegurando una alta confiabilidad en los datos extraídos para la toma de decisiones."
+            },
+            {
+                "NombreDelKPI_MEE": "Latencia del pipeline de inteligencia competitiva",
+                "DescripcionKPI_MEE": "Mide el tiempo transcurrido desde la publicación de una imagen en Instagram hasta que el precio aparece en el dashboard, garantizando información actualizada en menos de una hora para decisiones oportunas."
+            },
+            {
+                "NombreDelKPI_MEE": "Cobertura de perfiles monitoreados sin bloqueos",
+                "DescripcionKPI_MEE": "Indica el porcentaje de ejecuciones exitosas del pipeline sin errores de bloqueo por parte de Meta, asegurando la estabilidad y continuidad del proceso automatizado."
+            },
+            {
+                "NombreDelKPI_MEE": "Adopción del dashboard por el equipo de pricing",
+                "DescripcionKPI_MEE": "Refleja la frecuencia con la que los analistas de precios utilizan el reporte en Power BI, demostrando la integración y utilidad de la herramienta en el proceso de análisis."
+            }
+        ]
+    },
+    "EstrategiaDeSolucion": {
+        "ResumenDeEstrategia_E": "Como respuesta a las necesidades identificadas, CONSEIN plantea un enfoque de automatización inteligente orientado a transformar el proceso de monitoreo competitivo de precios de Rio Supermarket, pasando de un modelo manual, lento y propenso a errores, a un pipeline automatizado de inteligencia competitiva basado en el ecosistema Microsoft Azure y Power Platform. La estrategia de CONSEIN consiste en construir una solución estructurada en capas funcionales que cubren desde la ingesta controlada de imágenes publicadas por competidores en Instagram, hasta la visualización ejecutiva de inteligencia de precios en un dashboard actualizado de forma automática. La solución permitirá pasar de un proceso donde un analista dedica entre 3 y 5 horas diarias revisando perfiles manualmente, con una latencia de 24 a 48 horas en la información, a un modelo donde la inteligencia competitiva estará disponible en menos de 1 hora desde la publicación del competidor, con una revisión ejecutiva de no más de 30 minutos diarios. El enfoque prioriza la entrega incremental de valor, la validación temprana y la estabilidad operativa, apoyándose en componentes del ecosistema Microsoft para garantizar escalabilidad, trazabilidad, seguridad y precisión en la extracción de datos. Desde la perspectiva funcional, la solución se orienta a habilitar decisiones de pricing proactivas y basadas en datos del mismo día, eliminando la dependencia de scraping inestable, reduciendo errores de captura y liberando capacidad analítica del equipo de precios para actividades de mayor valor. A nivel tecnológico, la arquitectura se apoyará en los componentes sustentados en las entradas, incluyendo Azure Functions, Meta Graph API, Azure Blob Storage, Azure OpenAI GPT-4o, Azure Key Vault, Application Insights, Power Automate Premium, SharePoint Online y Power BI, conformando un pipeline serverless, auditado y sin infraestructura propia que administrar. CONSEIN cuenta con experiencia demostrada en la automatización de flujos con Power Automate y SharePoint, tal como lo evidencia el proyecto de automatización de políticas de seguridad ejecutado para Grupo Leti, lo que respalda la capacidad de implementar la capa de orquestación y almacenamiento de esta solución con solidez y trayectoria comprobada.",
+        "FasesGenerales_E": [
+            {
+                "NombreDeFaseGeneral_E": "Fase 1 — Diagnóstico y Configuración de Fundamentos",
+                "ActividadesDeFaseGeneral_E": [
+                    {
+                        "ActividadDeFaseGeneral_E": "Relevamiento y validación de los perfiles de Instagram de competidores a monitorear, incluyendo la definición de categorías de productos y criterios de cobertura."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Configuración del acceso a la Meta Graph API oficial con generación y almacenamiento seguro del Access Token en Azure Key Vault."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Aprovisionamiento de los recursos de infraestructura en Azure: Azure Functions, Azure Blob Storage, Azure Key Vault y Application Insights."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Definición de la estructura de datos de la Lista de SharePoint Online que actuará como fuente de verdad centralizada del pipeline."
+                    }
+                ]
+            },
+            {
+                "NombreDeFaseGeneral_E": "Fase 2 — Construcción del Pipeline de Inteligencia Competitiva",
+                "ActividadesDeFaseGeneral_E": [
+                    {
+                        "ActividadDeFaseGeneral_E": "Desarrollo de la Azure Function con timer trigger para consumir la Meta Graph API, descargar imágenes de publicaciones de competidores y almacenarlas en Azure Blob Storage."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Configuración del modelo Azure OpenAI GPT-4o con prompt estructurado para la extracción de nombre de producto, precio, unidad de medida, competidor y fecha desde imágenes promocionales."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Construcción del flujo de Power Automate Premium para orquestar el pipeline completo: activación de la Azure Function, recepción del JSON de precios, validación de datos y registro en la Lista de SharePoint."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Configuración de alertas automáticas en Power Automate para notificar al equipo de pricing cuando un competidor publique un precio inferior al umbral definido."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Implementación del monitoreo operativo del pipeline mediante Application Insights para detectar fallos, latencias y errores de procesamiento de forma proactiva."
+                    }
+                ]
+            },
+            {
+                "NombreDeFaseGeneral_E": "Fase 3 — Construcción del Dashboard Ejecutivo de Precios",
+                "ActividadesDeFaseGeneral_E": [
+                    {
+                        "ActividadDeFaseGeneral_E": "Conexión de Power BI a la Lista de SharePoint Online como fuente de datos del dashboard de inteligencia competitiva."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Diseño y construcción del dashboard con visualizaciones de comparativa de precios por competidor y producto, tendencias históricas semanales, alertas de precios inferiores y segmentación por categoría."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Configuración de la actualización automática del dashboard con cada ejecución del pipeline para asegurar disponibilidad de datos en tiempo cuasi-real."
+                    }
+                ]
+            },
+            {
+                "NombreDeFaseGeneral_E": "Fase 4 — Validación, Pruebas UAT y Ajuste",
+                "ActividadesDeFaseGeneral_E": [
+                    {
+                        "ActividadDeFaseGeneral_E": "Ejecución de pruebas de aceptación de usuario (UAT) para validar la precisión de extracción de precios desde imágenes, con meta de precisión igual o superior al 90%."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Validación de la latencia del pipeline completo, desde la publicación de una imagen por el competidor hasta su aparición en el dashboard de Power BI, con meta de 1 hora o menos."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Verificación de la cobertura de ejecuciones exitosas del pipeline sin bloqueos de Meta, con meta de 95% o más de ejecuciones completadas por semana."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Ajuste de parámetros del modelo, flujos de orquestación y visualizaciones del dashboard con base en los resultados de las pruebas UAT."
+                    }
+                ]
+            },
+            {
+                "NombreDeFaseGeneral_E": "Fase 5 — Puesta en Producción y Transferencia de Conocimiento",
+                "ActividadesDeFaseGeneral_E": [
+                    {
+                        "ActividadDeFaseGeneral_E": "Despliegue del pipeline completo en ambiente de producción con monitoreo activo desde Application Insights."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Capacitación al equipo de pricing en el uso del dashboard de Power BI y en la interpretación de alertas de inteligencia competitiva."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Entrega de documentación operativa del pipeline y del dashboard para soporte y mantenimiento por parte del equipo de Rio Supermarket."
+                    },
+                    {
+                        "ActividadDeFaseGeneral_E": "Seguimiento post-implementación para validar la adopción del dashboard, con meta de 5 o más consultas semanales por analista durante el primer mes."
+                    }
+                ]
+            }
+        ],
+        "EstrategiaEspecificas_E": [
+            {
+                "NombreDeEstrategiaEspecifica_E": "Estrategia de Ingesta Controlada con Azure Functions y Meta Graph API",
+                "ActividadesDeEstrategiaEspecifica_E": [
+                    {
+                        "Actividad_E": "Configurar el timer trigger de Azure Functions con expresión NCRONTAB en UTC para ejecutar la ingesta de imágenes de forma programada y estable."
+                    },
+                    {
+                        "Actividad_E": "Integrar el consumo de la Meta Graph API oficial para recuperar publicaciones recientes de los perfiles de Instagram de competidores configurados, eliminando la dependencia de scraping inestable."
+                    },
+                    {
+                        "Actividad_E": "Almacenar las imágenes descargadas en Azure Blob Storage como repositorio central auditado y trazable, disponible para el procesamiento posterior por el modelo de IA."
+                    },
+                    {
+                        "Actividad_E": "Gestionar de forma segura el Access Token de Meta Graph API mediante Azure Key Vault, sin exponer credenciales en la configuración de la Function App."
+                    }
+                ]
+            },
+            {
+                "NombreDeEstrategiaEspecifica_E": "Estrategia de Extracción de Precios con Azure OpenAI GPT-4o",
+                "ActividadesDeEstrategiaEspecifica_E": [
+                    {
+                        "Actividad_E": "Diseñar y ajustar el prompt estructurado para que GPT-4o identifique con precisión nombre del producto, precio, unidad de medida, competidor y fecha desde imágenes promocionales con diseños gráficos complejos."
+                    },
+                    {
+                        "Actividad_E": "Configurar el parámetro max_tokens explícitamente en cada request para evitar truncamiento silencioso en la respuesta del modelo."
+                    },
+                    {
+                        "Actividad_E": "Validar la precisión de extracción del modelo durante las pruebas UAT, con meta de 90% o más de precios correctamente identificados."
+                    },
+                    {
+                        "Actividad_E": "Gestionar de forma segura la API Key de Azure OpenAI mediante Azure Key Vault como parte de la arquitectura de seguridad del pipeline."
+                    }
+                ]
+            },
+            {
+                "NombreDeEstrategiaEspecifica_E": "Estrategia de Orquestación con Power Automate Premium y SharePoint Online",
+                "ActividadesDeEstrategiaEspecifica_E": [
+                    {
+                        "Actividad_E": "Construir el flujo de Power Automate Premium utilizando el conector HTTP Premium para activar la Azure Function e integrar el pipeline de forma automatizada y sin código adicional."
+                    },
+                    {
+                        "Actividad_E": "Implementar la lógica de validación de estructura del JSON de precios recibido antes de registrar los datos en la Lista de SharePoint, asegurando la integridad de la información."
+                    },
+                    {
+                        "Actividad_E": "Configurar la Lista de SharePoint Online con los campos requeridos: competidor, producto, precio, unidad, fecha y URL de imagen fuente, como fuente de verdad centralizada para el equipo de pricing."
+                    },
+                    {
+                        "Actividad_E": "Configurar alertas automáticas en el flujo de Power Automate para notificar al equipo de pricing cuando un precio de la competencia caiga por debajo del umbral definido."
+                    }
+                ]
+            },
+            {
+                "NombreDeEstrategiaEspecifica_E": "Estrategia de Visualización Ejecutiva con Power BI",
+                "ActividadesDeEstrategiaEspecifica_E": [
+                    {
+                        "Actividad_E": "Conectar Power BI a la Lista de SharePoint Online como fuente de datos principal del dashboard de inteligencia competitiva de precios."
+                    },
+                    {
+                        "Actividad_E": "Diseñar visualizaciones orientadas a la toma de decisiones de pricing: comparativa de precios por competidor y producto, alertas de precios inferiores, tendencias históricas semanales y segmentación por categoría."
+                    },
+                    {
+                        "Actividad_E": "Configurar la frecuencia de actualización automática del dataset de Power BI para reflejar los datos más recientes con cada ejecución del pipeline."
+                    },
+                    {
+                        "Actividad_E": "Capacitar al equipo de pricing en la navegación e interpretación del dashboard, con seguimiento de adopción durante el primer mes post-implementación."
+                    }
+                ]
+            },
+            {
+                "NombreDeEstrategiaEspecifica_E": "Estrategia de Seguridad y Monitoreo Operativo",
+                "ActividadesDeEstrategiaEspecifica_E": [
+                    {
+                        "Actividad_E": "Centralizar todos los secretos del pipeline (Access Token de Meta Graph API, API Key de Azure OpenAI y cadenas de conexión de Azure Storage) en Azure Key Vault, con acceso referenciado desde Azure Functions sin exposición en texto plano."
+                    },
+                    {
+                        "Actividad_E": "Configurar Application Insights para registrar ejecuciones, errores, latencias y excepciones del pipeline, habilitando la detección proactiva de fallos sin intervención manual."
+                    },
+                    {
+                        "Actividad_E": "Definir alertas automáticas en Application Insights ante fallos silenciosos del timer trigger o errores recurrentes en el procesamiento de imágenes."
+                    }
+                ]
+            }
+        ]
+    },
+    "ServiciosHerramientasMicrosoft": {
+        "ListaDeEstrategias_E": [
+            {
+                "Producto_E": "Azure Functions",
+                "Descripcion_E": "Motor serverless que ejecuta el pipeline bajo demanda con temporizador para consumir la Meta Graph API, descargar imágenes y orquestar el flujo de datos.",
+                "Beneficio_E": "Ejecución sin infraestructura propia con costos proporcionales al uso real, facilitando un pipeline escalable y eficiente."
+            },
+            {
+                "Producto_E": "Meta Graph API",
+                "Descripcion_E": "API oficial de Meta para acceder a publicaciones recientes de perfiles públicos de Instagram, consumida desde Azure Functions para obtener imágenes de competidores.",
+                "Beneficio_E": "Ingesta estable y oficial de imágenes sin riesgo de bloqueo, aumentando la tasa de éxito de recuperación de datos a ≥ 95%."
+            },
+            {
+                "Producto_E": "Azure Blob Storage",
+                "Descripcion_E": "Repositorio centralizado para almacenar imágenes descargadas y JSON estructurados generados por Azure OpenAI, además de servir como almacenamiento para la infraestructura de Azure Functions.",
+                "Beneficio_E": "Almacenamiento persistente, auditado y trazable que soporta tanto datos de negocio como de infraestructura."
+            },
+            {
+                "Producto_E": "Azure OpenAI (GPT-4o)",
+                "Descripcion_E": "Motor de inteligencia artificial que procesa imágenes para extraer precios, nombres de productos y otros datos relevantes mediante visión artificial avanzada.",
+                "Beneficio_E": "Alta precisión (≥ 90%) en la extracción contextual de precios en diseños gráficos complejos donde OCR tradicional falla."
+            },
+            {
+                "Producto_E": "Azure Key Vault",
+                "Descripcion_E": "Servicio para almacenamiento seguro de secretos como tokens de acceso y claves API, accesible por Azure Functions sin exponer credenciales en texto plano.",
+                "Beneficio_E": "Garantiza la seguridad de producción mediante la protección de credenciales sensibles."
+            },
+            {
+                "Producto_E": "Application Insights",
+                "Descripcion_E": "Herramienta de monitoreo y trazabilidad para Azure Functions que registra ejecuciones, errores y latencias, y permite configurar alertas automáticas.",
+                "Beneficio_E": "Proporciona visibilidad operativa completa y detección proactiva de fallos sin necesidad de intervención manual."
+            },
+            {
+                "Producto_E": "Power Automate Premium",
+                "Descripcion_E": "Orquestador del pipeline que activa Azure Functions, valida datos, registra información en SharePoint y envía alertas cuando se detectan precios inferiores.",
+                "Beneficio_E": "Automatización sin código con integración nativa a SharePoint y capacidad de alertas proactivas para agilizar la toma de decisiones."
+            },
+            {
+                "Producto_E": "SharePoint Online (Lista)",
+                "Descripcion_E": "Almacén estructurado para datos de inteligencia competitiva que registra competidor, producto, precio, unidad, fecha y URL de imagen.",
+                "Beneficio_E": "Fuente de verdad centralizada y consultable que facilita el acceso y análisis de datos para el equipo de pricing sin necesidad de base de datos adicional."
+            },
+            {
+                "Producto_E": "Power BI",
+                "Descripcion_E": "Dashboard ejecutivo conectado a SharePoint que visualiza comparativas de precios, alertas, tendencias históricas y segmentación por categoría con actualización automática.",
+                "Beneficio_E": "Visualización en tiempo real que permite decisiones ágiles y basadas en datos sin intervención manual."
+            }
+        ]
+    },
+    "BeneficioEsperado": {
+        "Beneficio_BE": "Implementar esta solución permitirá a Rio Supermarket obtener inteligencia competitiva en tiempo real con señales de precios actualizadas en menos de una hora, facilitando decisiones de pricing proactivas y basadas en datos actuales. Se eliminará el riesgo de bloqueos mediante el uso de la API oficial de Meta, garantizando una ingesta estable y confiable de información. La arquitectura serverless reducirá costos operativos al ajustarse al uso real, mientras que la extracción avanzada con IA permitirá interpretar precios en imágenes complejas con alta precisión. Además, se contará con un repositorio centralizado y trazable de datos históricos, y un dashboard ejecutivo que automatiza la visualización y análisis, fortaleciendo el posicionamiento competitivo y la escalabilidad sin costos adicionales."
+    },
+    "VentajasCompetitivas": {
+        "ListaDeVentajas_VC": [
+            {
+                "Ventaja_VC": "Reconocimiento como Country Partner of the Year por Microsoft durante 6 años consecutivos, garantizando la calidad y confiabilidad de la implementación tecnológica."
+            },
+            {
+                "Ventaja_VC": "Implementación de soluciones con Azure OpenAI que permiten una reducción significativa en tiempos de procesamiento, mejorando la eficiencia operativa."
+            },
+            {
+                "Ventaja_VC": "Uso de la Meta Graph API oficial para la ingesta estable y segura de datos de redes sociales, eliminando riesgos de bloqueo y asegurando la continuidad del monitoreo competitivo."
+            },
+            {
+                "Ventaja_VC": "Capacidad única de extracción de precios con alta precisión (≥ 90%) mediante IA de visión sobre imágenes gráficas complejas, superando las limitaciones del OCR tradicional."
+            },
+            {
+                "Ventaja_VC": "Integración nativa y sin fricciones dentro del ecosistema Microsoft, asegurando interoperabilidad, soporte oficial y un roadmap tecnológico activo."
+            },
+            {
+                "Ventaja_VC": "Arquitectura escalable que permite ampliar la cobertura de competidores, categorías y canales sin necesidad de rediseñar la solución, protegiendo la inversión inicial."
+            },
+            {
+                "Ventaja_VC": "Transferencia de conocimiento al equipo interno para operar y evolucionar la solución de forma autónoma, fortaleciendo la capacidad interna de inteligencia competitiva."
+            }
+        ]
+    },
+    "PlanDeTrabajo": {
+        "ResumenPlanDeTrabajo_PT": "CONSEIN ejecutará el Proyecto Rio Supermarket bajo un enfoque ágil estructurado en Sprints, orientado a entregar valor incremental en cada ciclo de trabajo. La ejecución se organizará en cuatro frentes funcionales alineados con las capas de la solución: ingesta controlada de imágenes vía Meta Graph API, extracción de precios con inteligencia artificial sobre Azure OpenAI GPT-4o, orquestación y persistencia mediante Power Automate y SharePoint Online, y visualización ejecutiva a través de Power BI. Cada Sprint producirá entregables concretos y verificables, manteniendo visibilidad continua sobre el avance real del proyecto. Rio Supermarket participará activamente en revisiones y validaciones al cierre de cada Sprint, garantizando que los entregables respondan a las necesidades del equipo de pricing y a los KPIs definidos. La fase inicial del proyecto contempla la definición del alcance operativo, la validación de prerrequisitos técnicos y la preparación del entorno, sentando las bases para una ejecución ordenada y sin interrupciones.",
+        "ResumenDeEnfoqueMetodologico_PT": "El proyecto se gestionará bajo el marco de trabajo Scrum, organizando la ejecución en Sprints de duración definida, cada uno orientado a resultados concretos, verificables y alineados al valor de negocio de Rio Supermarket. Este enfoque permite validación temprana de componentes críticos como la integración con Meta Graph API y la precisión de extracción de precios por Azure OpenAI GPT-4o, facilitando ajustes de prioridades antes de avanzar a etapas posteriores. La dinámica de Scrum garantiza transparencia sobre el estado real del proyecto en todo momento, con seguimiento continuo y participación activa del cliente en la revisión y aceptación de entregables por Sprint. La ejecución se organiza en cuatro Sprints que cubren desde la preparación del entorno y configuración de la infraestructura Azure, hasta el desarrollo del pipeline completo, la construcción del dashboard de Power BI y el cierre formal con transferencia operativa al equipo de Rio Supermarket.",
+        "IntroduccionTablaResumenDeSprints_PT": "A continuación se presenta la tabla resumen de Sprints que estructura la ejecución del Proyecto Rio Supermarket. El proyecto se organiza en cuatro Sprints con una duración total estimada de ocho semanas, sujeta a la disponibilidad oportuna de los prerrequisitos técnicos y de licenciamiento por parte del cliente, incluyendo el acceso aprobado a Azure OpenAI, las credenciales de Meta Graph API y las licencias de Power Automate Premium y Power BI Pro. Cada Sprint incluye las fases de trabajo correspondientes y sus entregables principales, garantizando entregas de valor progresivas y verificables a lo largo de todo el ciclo de implementación.",
+        "TablaResumenDeSprints_PT": [
+            {
+                "NombreSprint_PT": "Sprint 1: Definición, preparación y configuración de entornos",
+                "DuracionEstimada_PT": "2 semanas",
+                "FasesIncluidas_PT": "Definición del alcance operativo detallado, validación de prerrequisitos técnicos y de licenciamiento, aprovisionamiento de entornos Dev y Prod en Azure, configuración de Azure Key Vault con secretos del pipeline, configuración de Azure Storage Account y habilitación de Application Insights.",
+                "Entregables_PT": "Documento de visión y alcance operativo del proyecto, entornos Azure Dev y Prod aprovisionados, Azure Key Vault configurado con credenciales seguras, Azure Storage Account activa, Application Insights vinculado a la Function App."
+            },
+            {
+                "NombreSprint_PT": "Sprint 2: Desarrollo del pipeline de ingesta y extracción de precios",
+                "DuracionEstimada_PT": "2 semanas",
+                "FasesIncluidas_PT": "Desarrollo y despliegue de Azure Functions con timer trigger para consumo de Meta Graph API, descarga y almacenamiento de imágenes en Azure Blob Storage, integración con Azure OpenAI GPT-4o para extracción de precios desde imágenes con prompt estructurado, generación de JSON estructurado con datos de competidor, producto, precio, unidad y fecha.",
+                "Entregables_PT": "Azure Function desplegada y operativa en entorno Dev, pipeline de ingesta de imágenes desde Meta Graph API funcional, integración con Azure OpenAI GPT-4o validada con imágenes reales de competidores, JSON estructurado de precios generado correctamente."
+            },
+            {
+                "NombreSprint_PT": "Sprint 3: Orquestación, persistencia y dashboard ejecutivo",
+                "DuracionEstimada_PT": "2 semanas",
+                "FasesIncluidas_PT": "Configuración del flujo Power Automate Premium para orquestación del pipeline completo, validación y registro de datos en Lista de SharePoint Online, configuración de alertas automáticas ante precios inferiores de competidores, desarrollo del dashboard de Power BI conectado a SharePoint con comparativa de precios, tendencias históricas y segmentación por categoría.",
+                "Entregables_PT": "Flujo Power Automate Premium operativo y orquestando el pipeline completo, Lista de SharePoint Online estructurada con datos de inteligencia competitiva, alertas automáticas configuradas, dashboard de Power BI publicado con visualizaciones de inteligencia competitiva."
+            },
+            {
+                "NombreSprint_PT": "Sprint 4: Validación integral, transferencia operativa y cierre",
+                "DuracionEstimada_PT": "2 semanas",
+                "FasesIncluidas_PT": "Pruebas integrales del pipeline end-to-end en entorno de producción, validación de precisión de extracción de precios (UAT), validación de latencia del pipeline, validación de cobertura de perfiles sin bloqueos, capacitación al equipo de pricing en el uso del dashboard de Power BI, transferencia operativa y documentación de cierre.",
+                "Entregables_PT": "Informe de pruebas UAT con resultados de precisión y latencia, pipeline desplegado y validado en entorno de producción, sesión de capacitación realizada con el equipo de pricing, documentación técnica y operativa del pipeline, acta de cierre y entrega formal del proyecto."
+            }
+        ],
+        "ProductBacklog": {
+            "ResumenProductBacklog_PT": "El Product Backlog del Proyecto Rio Supermarket agrupa los entregables de alto valor que conforman el pipeline inteligente de inteligencia competitiva de precios. Cada elemento representa un componente funcional que aporta valor directo al equipo de pricing de Rio Supermarket, desde la preparación del entorno hasta la visualización ejecutiva y la transferencia operativa.",
+            "ListaDeProductBacklog_PT": [
+                {
+                    "ElementoDeProductBacklog_PT": "Documento de visión y alcance operativo del proyecto con definición de perfiles de competidores a monitorear y criterios de configuración del pipeline."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Entornos Azure Dev y Prod aprovisionados con Azure Key Vault, Azure Storage Account y Application Insights configurados y operativos."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Azure Function con timer trigger para consumo programado de Meta Graph API y descarga de imágenes de perfiles de competidores en Azure Blob Storage."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Integración con Azure OpenAI GPT-4o para extracción automatizada de precios desde imágenes promocionales, con generación de JSON estructurado por competidor, producto, precio, unidad y fecha."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Flujo Power Automate Premium que orquesta el pipeline completo: activación de Azure Function, recepción y validación del JSON de precios, registro en Lista de SharePoint Online y envío de alertas automáticas ante precios inferiores de competidores."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Lista de SharePoint Online estructurada como repositorio centralizado de inteligencia competitiva de precios, consultable por el equipo de pricing."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Dashboard ejecutivo de Power BI con comparativa de precios por competidor y producto, alertas de precios inferiores, tendencias históricas semanales y segmentación por categoría, actualizado automáticamente con cada ejecución del pipeline."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Pruebas integrales UAT del pipeline end-to-end en entorno de producción, validando precisión de extracción, latencia y cobertura de perfiles sin bloqueos."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Capacitación al equipo de pricing en el uso del dashboard de Power BI y en la interpretación de los reportes de inteligencia competitiva."
+                },
+                {
+                    "ElementoDeProductBacklog_PT": "Documentación técnica y operativa del pipeline, incluyendo arquitectura de la solución, configuraciones clave y guía de operación, junto con el acta de cierre formal del proyecto."
+                }
+            ]
+        },
+        "HistoriasDeUsuario": {
+            "ResumenDeHistoriasDeUsuario_PT": "Las siguientes historias de usuario representan las necesidades de negocio del equipo de Rio Supermarket que la solución propuesta busca satisfacer. Están redactadas en lenguaje de negocio y alineadas con el problema de pricing competitivo, los beneficios esperados y los KPIs definidos para el proyecto.",
+            "ListaDeHistoriasDeUsuario_PT": [
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como analista de precios, quiero que el sistema capture automáticamente los precios publicados por los competidores en Instagram, para dejar de invertir entre 3 y 5 horas diarias en revisión manual de perfiles y dedicar ese tiempo al análisis estratégico."
+                },
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como analista de precios, quiero que los precios extraídos de imágenes promocionales de la competencia estén disponibles en el dashboard en menos de 1 hora desde su publicación, para tomar decisiones de pricing basadas en datos del mismo día."
+                },
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como responsable de pricing, quiero recibir alertas automáticas cuando un competidor publique un precio inferior al nuestro en un producto monitoreado, para reaccionar de forma proactiva antes de que el impacto en ventas sea medible."
+                },
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como líder de tecnología, quiero que el pipeline de inteligencia competitiva opere sin depender de scraping de Instagram, para garantizar una tasa de ejecuciones exitosas igual o superior al 95% sin riesgo de bloqueos por parte de Meta."
+                },
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como analista de precios, quiero visualizar en un dashboard ejecutivo la comparativa de precios por producto y competidor, con tendencias históricas semanales y segmentación por categoría, para fundamentar mis recomendaciones de pricing con datos actualizados y trazables."
+                },
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como responsable de pricing, quiero que el sistema identifique correctamente los precios incrustados en diseños gráficos complejos de las publicaciones de la competencia, con una precisión igual o superior al 90%, para confiar en los datos sin necesidad de verificación manual constante."
+                },
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como líder de tecnología, quiero que la arquitectura de la solución permita agregar nuevos competidores o categorías de productos al monitoreo sin rediseñar el pipeline, para escalar la cobertura de inteligencia competitiva según las necesidades del negocio."
+                },
+                {
+                    "ElementoDeHistoriasDeUsuario_PT": "Como usuario de negocio, quiero que todo el historial de imágenes y precios extraídos quede registrado de forma centralizada y consultable, para contar con un activo de inteligencia competitiva acumulado que soporte análisis históricos y decisiones de largo plazo."
+                }
+            ]
+        }
+    },
+    "CriteriosAceptacion": {
+        "ResumenCriteriosDeAceptacion_CA": "Los criterios de aceptación establecidos constituyen condiciones objetivas y verificables que permiten determinar si la solución entregada cumple con el alcance definido en el proyecto Rio Supermarket. Consein demostrará el cumplimiento de cada criterio mediante evidencias concretas, mientras que el cliente validará los resultados durante el período de pruebas y sesiones de aceptación. Una vez que todos los criterios hayan sido cumplidos y validados, la solución podrá considerarse formalmente entregada y aceptada. Cualquier requerimiento adicional no contemplado en el alcance deberá gestionarse como un cambio o propuesta independiente.",
+        "TablaDeCriterios_CA": [
+            {
+                "ID_CA": "CA-01",
+                "CriterioDeAceptacion_CA": "Pipeline desplegado",
+                "CondicionDeDeCumplimiento_CA": "El pipeline completo se encuentra desplegado y operativo en los entornos Dev y Prod de Azure, incluyendo Azure Functions, Azure Blob Storage, Azure OpenAI GPT-4o, Power Automate y SharePoint Online.",
+                "EvidenciaDeValidacion_CA": "Demostración funcional del pipeline en entorno de producción y documentación de despliegue.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            },
+            {
+                "ID_CA": "CA-02",
+                "CriterioDeAceptacion_CA": "Ingesta controlada de imágenes",
+                "CondicionDeDeCumplimiento_CA": "La Azure Function consume la Meta Graph API oficial y descarga imágenes recientes de perfiles de Instagram configurados, almacenándolas en Azure Blob Storage sin bloqueos ni errores.",
+                "EvidenciaDeValidacion_CA": "Logs de ejecución de Azure Functions y registros en Azure Blob Storage con imágenes descargadas.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            },
+            {
+                "ID_CA": "CA-03",
+                "CriterioDeAceptacion_CA": "Extracción de precios con IA",
+                "CondicionDeDeCumplimiento_CA": "Azure OpenAI GPT-4o procesa las imágenes almacenadas y extrae correctamente los datos de nombre de producto, precio, unidad, competidor y fecha en formato JSON estructurado con precisión igual o superior al 90%.",
+                "EvidenciaDeValidacion_CA": "Matriz de casos de prueba con resultados de extracción y JSON generados validados por el equipo técnico.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            },
+            {
+                "ID_CA": "CA-04",
+                "CriterioDeAceptacion_CA": "Orquestación y persistencia de datos",
+                "CondicionDeDeCumplimiento_CA": "El flujo de Power Automate Premium orquesta el pipeline completo, valida la estructura del JSON y registra los datos en la Lista de SharePoint Online según la estructura definida.",
+                "EvidenciaDeValidacion_CA": "Capturas de pantalla del flujo Power Automate y registros en la Lista de SharePoint con datos consistentes.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            },
+            {
+                "ID_CA": "CA-05",
+                "CriterioDeAceptacion_CA": "Dashboard ejecutivo publicado",
+                "CondicionDeDeCumplimiento_CA": "El dashboard de Power BI está publicado y conectado a la Lista de SharePoint, mostrando comparativas de precios, alertas automáticas, tendencias históricas y segmentación por categoría con actualización automática.",
+                "EvidenciaDeValidacion_CA": "Visualización del dashboard en Power BI Service y validación funcional por el equipo de pricing.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            },
+            {
+                "ID_CA": "CA-06",
+                "CriterioDeAceptacion_CA": "Pruebas UAT completadas",
+                "CondicionDeDeCumplimiento_CA": "Se han ejecutado pruebas integrales end-to-end en entorno de producción, validando precisión de extracción, latencia del pipeline y cobertura sin bloqueos, con resultados aprobados por el cliente.",
+                "EvidenciaDeValidacion_CA": "Informe de pruebas UAT aprobado y acta de validación firmada por el cliente.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            },
+            {
+                "ID_CA": "CA-07",
+                "CriterioDeAceptacion_CA": "Transferencia operativa realizada",
+                "CondicionDeDeCumplimiento_CA": "Se realiza sesión de capacitación y transferencia de conocimiento al equipo de pricing sobre el uso del dashboard y operación del pipeline.",
+                "EvidenciaDeValidacion_CA": "Acta, minuta o grabación de la sesión de capacitación con asistencia del equipo de Rio Supermarket.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            },
+            {
+                "ID_CA": "CA-08",
+                "CriterioDeAceptacion_CA": "Documentación de cierre entregada",
+                "CondicionDeDeCumplimiento_CA": "Se entrega documentación técnica y operativa completa del pipeline, incluyendo arquitectura, configuraciones clave, guía de operación y acta de cierre formal del proyecto.",
+                "EvidenciaDeValidacion_CA": "Documento de cierre entregado y validado por el cliente.",
+                "EstadoDeAceptacion_CA": "Cumplido / No Cumplido"
+            }
+        ]
+    },
+    "FueraDeAlcanceDelProyecto": {
+        "ListaFueraDeAlcance_FAP": [
+            {
+                "TituloFueraDeAlcance_FAP": "Nuevas funcionalidades o cambios de alcance",
+                "DescripcionFueraDeAlcance_FAP": "Cualquier funcionalidad, comportamiento, proceso, integración, campo, reporte, formato, automatización o capacidad no contemplada expresamente en el alcance aprobado será considerada cambio de alcance y deberá ser evaluada, estimada y gestionada mediante una propuesta independiente."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Integraciones adicionales",
+                "DescripcionFueraDeAlcance_FAP": "Se encuentra fuera del alcance de la presente propuesta la integración con bases de datos, APIs, sistemas corporativos, aplicaciones de terceros, servicios externos o fuentes de datos no descritas expresamente en la solución basada en Meta Graph API, Azure Functions, Power Automate, SharePoint Online y Power BI."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Licencias, suscripciones y consumos",
+                "DescripcionFueraDeAlcance_FAP": "No se contempla dentro del alcance base el suministro, contratación, gestión o costos asociados a licencias, suscripciones, consumos de servicios cloud o costos de plataforma Microsoft Azure, Power Platform, Power BI, Meta Graph API o Azure OpenAI, salvo que estén expresamente incluidos en la propuesta."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Administración de plataformas del cliente",
+                "DescripcionFueraDeAlcance_FAP": "Queda fuera del alcance la administración financiera, contractual, operativa o de gobierno general de las plataformas del cliente, incluyendo administración del tenant, suscripción Azure, facturación cloud, políticas corporativas, redes, firewalls, VPN, DNS, seguridad organizacional o configuraciones globales no relacionadas directamente con el alcance operativo del pipeline."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Soporte posterior, mantenimiento o evolución",
+                "DescripcionFueraDeAlcance_FAP": "No se incluyen actividades de soporte posterior al cierre, mesa de ayuda, mantenimiento correctivo o evolutivo, monitoreo recurrente, operación administrada, acompañamiento extendido o bolsa de horas, salvo que hayan sido expresamente contempladas en la propuesta."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Capacitación no incluida",
+                "DescripcionFueraDeAlcance_FAP": "Se excluyen programas formales de capacitación, certificaciones, entrenamiento técnico avanzado o formación sobre desarrollo y administración de las plataformas Microsoft Azure, Power Platform, Power BI o agentes de inteligencia artificial, salvo la capacitación limitada para el uso del dashboard de Power BI contemplada en la transferencia operativa."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Datos, calidad de información o remediación",
+                "DescripcionFueraDeAlcance_FAP": "No se contempla la limpieza, corrección, homologación, enriquecimiento, carga histórica, depuración, remediación o mejora de calidad de datos proporcionados por el cliente. La solución depende de la calidad y disponibilidad de los datos e imágenes suministrados por los perfiles públicos de Instagram definidos."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Migraciones",
+                "DescripcionFueraDeAlcance_FAP": "No se incluye la ejecución de migraciones productivas o automáticas de datos o sistemas. En caso de requerirse, deberá gestionarse mediante propuesta independiente. La solución contempla únicamente la ingesta y procesamiento de datos desde fuentes definidas."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Servicios externos o terceros",
+                "DescripcionFueraDeAlcance_FAP": "No se garantizan la continuidad, disponibilidad, cambios de políticas, bloqueos, restricciones, rate limits, suspensión de cuentas o modificaciones impuestas por terceros, incluyendo Meta (Instagram) o cualquier otro proveedor externo fuera del control de CONSEIN."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Cambios de diseño o presentación",
+                "DescripcionFueraDeAlcance_FAP": "Quedan fuera del alcance nuevos diseños, formatos, campos, vistas, reportes o ajustes visuales no definidos originalmente en el dashboard de Power BI o en los entregables de la solución."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Operaciones destructivas o riesgosas",
+                "DescripcionFueraDeAlcance_FAP": "No se incluyen operaciones de escritura, modificación, eliminación de datos, cambios estructurales, sentencias destructivas, cambios de esquema o administración avanzada en bases de datos o sistemas productivos, salvo que estén expresamente contempladas en el alcance."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Alta disponibilidad, continuidad o disaster recovery",
+                "DescripcionFueraDeAlcance_FAP": "Se excluyen componentes empresariales avanzados como alta disponibilidad, recuperación ante desastres, continuidad operativa, observabilidad avanzada, monitoreo empresarial o alertas corporativas, salvo que estén explícitamente incluidas en la propuesta."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Estrategias comerciales o decisiones de negocio",
+                "DescripcionFueraDeAlcance_FAP": "No se incluye la definición de estrategias comerciales, políticas de precios, decisiones de negocio, interpretación ejecutiva permanente o ejecución de acciones comerciales derivadas de la información entregada por la solución."
+            },
+            {
+                "TituloFueraDeAlcance_FAP": "Observaciones no relacionadas con criterios de aceptación",
+                "DescripcionFueraDeAlcance_FAP": "Las observaciones del cliente durante el período de pruebas deberán estar relacionadas exclusivamente con el incumplimiento de los criterios de aceptación definidos. Nuevos requerimientos, cambios de alcance o ajustes no definidos originalmente no serán considerados defectos y deberán gestionarse mediante control de cambio."
+            }
+        ]
+    },
+    "PrerrequisitosTecnicos": {
+        "Resumen_PT": "La solución requiere una infraestructura basada en Microsoft Azure y Power Platform, con componentes específicos para ingesta, procesamiento, orquestación y reporte de datos. Se deben validar accesos, configuraciones y entornos para garantizar la correcta operación del pipeline de inteligencia competitiva de precios.",
+        "ListaPrerrequisitosTecnicos_PT": [
+            {
+                "Requisito_PT": "Suscripción Azure activa",
+                "Descripcion_PT": "Necesaria para desplegar Azure Functions, Azure Blob Storage, Azure OpenAI GPT-4o, Azure Key Vault y Application Insights, con cuota habilitada para Azure OpenAI en la región seleccionada."
+            },
+            {
+                "Requisito_PT": "Acceso aprobado a Azure OpenAI (GPT-4o 2024-11-20)",
+                "Descripcion_PT": "Debe gestionarse con anticipación mínima de 5–10 días hábiles y verificar disponibilidad del modelo en la región seleccionada."
+            },
+            {
+                "Requisito_PT": "Azure Storage Account",
+                "Descripcion_PT": "Requerida para almacenamiento de imágenes y JSONs, así como para el funcionamiento interno de Azure Functions."
+            },
+            {
+                "Requisito_PT": "Azure Key Vault aprovisionado",
+                "Descripcion_PT": "Debe estar configurado antes del inicio del proyecto para almacenar tokens y claves de acceso, con Managed Identity de la Function App con permisos de lectura."
+            },
+            {
+                "Requisito_PT": "Credenciales de Meta Graph API",
+                "Descripcion_PT": "Aplicación registrada en Meta for Developers con permisos para acceder a publicaciones públicas de Instagram; el Access Token debe almacenarse en Key Vault y validar accesibilidad de perfiles."
+            },
+            {
+                "Requisito_PT": "Configuración UTC en Azure Functions (timer trigger)",
+                "Descripcion_PT": "El cron expression debe definirse en UTC, ajustando horario para la zona comercial (UTC-4); considerar uso de Flex Consumption Plan si se requiere otra configuración."
+            },
+            {
+                "Requisito_PT": "Validación de formato de imágenes",
+                "Descripcion_PT": "Confirmar que las imágenes descargadas desde Meta Graph API sean accesibles públicamente o convertirlas a base64 para su procesamiento por Azure OpenAI."
+            },
+            {
+                "Requisito_PT": "Entornos Dev y Prod en Azure",
+                "Descripcion_PT": "Se requieren dos entornos aislados para desarrollo, pruebas y producción para garantizar calidad y estabilidad."
+            },
+            {
+                "Requisito_PT": "Application Insights habilitado",
+                "Descripcion_PT": "Debe estar aprovisionado y vinculado a la Function App para monitoreo de ejecuciones, errores y latencias."
+            },
+            {
+                "Requisito_PT": "SharePoint Online activo en el tenant",
+                "Descripcion_PT": "Necesario para alojar la lista estructurada de precios competitivos que alimenta el dashboard de Power BI."
+            },
+            {
+                "Requisito_PT": "Licencia Power Automate Premium",
+                "Descripcion_PT": "Requerida para habilitar conectores premium y el conector HTTP personalizado para invocar Azure Functions."
+            },
+            {
+                "Requisito_PT": "Licencia Power BI Pro o Premium",
+                "Descripcion_PT": "Necesaria para publicar y compartir el dashboard de inteligencia competitiva con el equipo de pricing."
+            }
+        ]
+    },
+    "PrerrequisitosDeLicenciamiento": {
+        "Resumen_PL": "La solución requiere licenciamiento y suscripciones activas en Microsoft Azure y Power Platform para habilitar la ingesta, procesamiento, orquestación, almacenamiento y visualización de datos de inteligencia competitiva. Se deben validar planes y accesos para Azure Functions, Azure OpenAI, Power Automate Premium, Power BI Pro y SharePoint Online, así como el uso de servicios auxiliares como Azure Key Vault y Application Insights para seguridad y monitoreo.",
+        "ListaPrerrequisitosLicenciamiento_PL": [
+            {
+                "Actividad_PL": "Azure Functions",
+                "Configuracion_PL": "Plan Consumption (serverless, pago por ejecución en UTC). Incluye 1 millón de ejecuciones gratuitas/mes. Si se requiere zona horaria local, usar Flex Consumption Plan.",
+                "MinimoRequerido_PL": "Suscripción Azure Pay-as-you-go activa.",
+                "Alternativa_PL": "Flex Consumption Plan para soporte de timezone local y mejor rendimiento."
+            },
+            {
+                "Actividad_PL": "Azure Blob Storage",
+                "Configuracion_PL": "LRS (redundancia local) para almacenamiento de imágenes y JSONs. Cobro por GB almacenado y operaciones de lectura/escritura.",
+                "MinimoRequerido_PL": "Suscripción Azure activa con cobro por uso.",
+                "Alternativa_PL": "ZRS o GRS para mayor redundancia geográfica."
+            },
+            {
+                "Actividad_PL": "Azure OpenAI (GPT-4o)",
+                "Configuracion_PL": "Versión gpt-4o (2024-11-20) con configuración explícita de max_tokens para evitar truncamiento.",
+                "MinimoRequerido_PL": "Suscripción Azure activa con acceso aprobado a Azure OpenAI.",
+                "Alternativa_PL": "Provisioned Throughput Units (PTU) para volúmenes altos con latencia predecible."
+            },
+            {
+                "Actividad_PL": "Azure Key Vault",
+                "Configuracion_PL": "Tier Estándar para almacenamiento seguro de secretos con cobro por operaciones.",
+                "MinimoRequerido_PL": "Suscripción Azure activa con cobro por operaciones.",
+                "Alternativa_PL": "Key Vault Premium para claves respaldadas por HSM."
+            },
+            {
+                "Actividad_PL": "Application Insights",
+                "Configuracion_PL": "Workspace-based, con primeros 5 GB/mes gratuitos para monitoreo y trazabilidad.",
+                "MinimoRequerido_PL": "Suscripción Azure activa.",
+                "Alternativa_PL": "Retención extendida configurable hasta 730 días."
+            },
+            {
+                "Actividad_PL": "Power Automate Premium",
+                "Configuracion_PL": "Plan Premium por usuario para habilitar conector HTTP personalizado y flujos de alta frecuencia.",
+                "MinimoRequerido_PL": "Licencia Power Automate Premium per-user activa.",
+                "Alternativa_PL": "Power Automate per-flow plan para flujos específicos sin licencia por usuario."
+            },
+            {
+                "Actividad_PL": "Power BI Pro",
+                "Configuracion_PL": "Licencia por usuario publicador y consumidor del dashboard.",
+                "MinimoRequerido_PL": "Licencia Power BI Pro activa por usuario.",
+                "Alternativa_PL": "Power BI Premium por capacidad para múltiples usuarios sin licencias individuales."
+            },
+            {
+                "Actividad_PL": "SharePoint Online",
+                "Configuracion_PL": "Incluido en Microsoft 365 Business Standard o superior para almacenamiento estructurado de datos.",
+                "MinimoRequerido_PL": "Microsoft 365 Business Standard o superior.",
+                "Alternativa_PL": "Microsoft 365 Business Premium para funcionalidades de seguridad avanzadas."
+            }
+        ]
+    },
+    "MatrizDeRiesgo": {
+        "ListaMatrizDeRiesgos_PL": [
+            {
+                "Riesgo_MR": "Acceso a Azure OpenAI no aprobado a tiempo",
+                "Probabilidad_MR": "Media",
+                "Impacto_MR": "Alto",
+                "NivelDeRiesgo_MR": "Alto",
+                "Mitigacion_MR": "Iniciar solicitud de acceso a Azure OpenAI en Fase I; gestionar mínimo 10 días hábiles antes de Fase III"
+            },
+            {
+                "Riesgo_MR": "Meta Graph API rechaza perfiles objetivo (cuentas privadas o cambios de política)",
+                "Probabilidad_MR": "Media",
+                "Impacto_MR": "Alto",
+                "NivelDeRiesgo_MR": "Alto",
+                "Mitigacion_MR": "Validar en Fase I que los perfiles (@gama_ve, @plaza_ve) son públicos y accesibles vía API; definir perfiles alternativos de respaldo"
+            },
+            {
+                "Riesgo_MR": "Truncamiento silencioso del JSON de respuesta de GPT-4o",
+                "Probabilidad_MR": "Media",
+                "Impacto_MR": "Alto",
+                "NivelDeRiesgo_MR": "Alto",
+                "Mitigacion_MR": "Usar versión gpt-4o (2024-11-20) con output 16,384 tokens; configurar max_tokens explícitamente en cada request; implementar validación de estructura JSON completo antes de guardar en SharePoint"
+            },
+            {
+                "Riesgo_MR": "Baja precisión de GPT-4o en imágenes con diseños gráficos muy complejos",
+                "Probabilidad_MR": "Media",
+                "Impacto_MR": "Alto",
+                "NivelDeRiesgo_MR": "Alto",
+                "Mitigacion_MR": "Diseñar y refinar prompts con imágenes reales de competidores en Fase III; establecer umbral mínimo de confianza en la respuesta JSON e iterar en Fase VI (UAT)"
+            },
+            {
+                "Riesgo_MR": "Credenciales de Meta Graph API o Azure OpenAI expuestas",
+                "Probabilidad_MR": "Baja",
+                "Impacto_MR": "Muy Alto",
+                "NivelDeRiesgo_MR": "Alto",
+                "Mitigacion_MR": "Usar Azure Key Vault con Managed Identity desde el inicio; nunca almacenar secretos en variables de entorno en texto plano ni en repositorios de código"
+            },
+            {
+                "Riesgo_MR": "Timer trigger no ejecuta en horario local por limitación UTC en Linux + Consumption",
+                "Probabilidad_MR": "Media",
+                "Impacto_MR": "Medio",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Configurar cron expression en UTC (Venezuela = UTC-4); documentar la conversión para el equipo. Alternativa: migrar a Flex Consumption Plan"
+            },
+            {
+                "Riesgo_MR": "Rate limiting de Azure OpenAI al procesar múltiples imágenes en paralelo",
+                "Probabilidad_MR": "Baja",
+                "Impacto_MR": "Medio",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Implementar retry logic con exponential backoff en la Azure Function; procesar imágenes de forma secuencial o con throttling controlado"
+            },
+            {
+                "Riesgo_MR": "Imágenes de Instagram no accesibles en base64 o URL pública por GPT-4o",
+                "Probabilidad_MR": "Media",
+                "Impacto_MR": "Medio",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Validar en Fase III que las URLs de Meta Graph API son públicamente accesibles; implementar conversión a base64 como fallback antes de enviar a Azure OpenAI"
+            },
+            {
+                "Riesgo_MR": "Pipeline falla silenciosamente sin alertas al equipo",
+                "Probabilidad_MR": "Baja",
+                "Impacto_MR": "Alto",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Configurar Application Insights y alertas en Azure Monitor ante errores de ejecución del timer trigger; Power Automate incluirá manejo de excepciones con notificación por correo"
+            },
+            {
+                "Riesgo_MR": "Cambios en políticas de Meta Graph API durante el proyecto",
+                "Probabilidad_MR": "Baja",
+                "Impacto_MR": "Alto",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Monitorear Meta for Developers durante el proyecto; arquitectura modular permite ajustar la capa de ingesta sin modificar el resto del pipeline"
+            },
+            {
+                "Riesgo_MR": "Costos de Azure OpenAI superiores a lo estimado",
+                "Probabilidad_MR": "Baja",
+                "Impacto_MR": "Medio",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Configurar alertas de presupuesto en Azure Cost Management; implementar lógica de deduplicación para no reprocesar imágenes ya analizadas"
+            },
+            {
+                "Riesgo_MR": "Resistencia a la adopción del dashboard por el equipo de pricing",
+                "Probabilidad_MR": "Baja",
+                "Impacto_MR": "Medio",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Capacitación dirigida con casos de uso reales de Rio Supermarket en Fase VI; diseño del dashboard alineado al flujo de trabajo actual del analista"
+            },
+            {
+                "Riesgo_MR": "Retraso en provisión de licencias o aprobación de Azure OpenAI",
+                "Probabilidad_MR": "Media",
+                "Impacto_MR": "Medio",
+                "NivelDeRiesgo_MR": "Medio",
+                "Mitigacion_MR": "Iniciar gestión de licencias y acceso a Azure OpenAI mínimo 15 días antes del inicio efectivo del proyecto"
+            }
+        ]
+    }
+}
