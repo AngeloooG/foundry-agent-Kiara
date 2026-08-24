@@ -7,15 +7,20 @@ public static class PowerAutomateCaseMapper
 {
     public static CasesCollectionResponse MapCollection(JsonElement root)
     {
-        var payload = TryGetProperty(root, "body", out var body) ? body : root;
-        var items = new List<CaseSummaryResponse>();
+        var payload = TryGetProperty(root, "body", out var body)
+            ? UnwrapJsonString(body)
+            : UnwrapJsonString(root);
 
-        if (TryGetProperty(payload, "items", out var itemsElement) &&
-            itemsElement.ValueKind == JsonValueKind.Array)
+        var items = new List<CaseSummaryResponse>();
+        if (TryGetProperty(payload, "items", out var itemsElement))
         {
-            foreach (var item in itemsElement.EnumerateArray())
+            itemsElement = UnwrapJsonString(itemsElement);
+            if (itemsElement.ValueKind == JsonValueKind.Array)
             {
-                items.Add(MapSummary(item));
+                foreach (var item in itemsElement.EnumerateArray())
+                {
+                    items.Add(MapSummary(item));
+                }
             }
         }
 
@@ -25,8 +30,12 @@ public static class PowerAutomateCaseMapper
         return new CasesCollectionResponse(items, items.Count, lastUpdated);
     }
 
-    public static CaseDetailResponse MapDetail(JsonElement item)
+    public static CaseDetailResponse MapDetail(JsonElement root)
     {
+        var item = TryGetProperty(root, "body", out var body)
+            ? UnwrapJsonString(body)
+            : UnwrapJsonString(root);
+
         return new CaseDetailResponse(
             Id: GetRequiredId(item),
             Title: NullIfEmpty(GetString(item, "title")) ?? "Caso sin título",
@@ -55,9 +64,8 @@ public static class PowerAutomateCaseMapper
             DocumentUrl: NullIfEmpty(GetString(item, "documentUrl")));
     }
 
-    private static CaseSummaryResponse MapSummary(JsonElement item)
-    {
-        return new CaseSummaryResponse(
+    private static CaseSummaryResponse MapSummary(JsonElement item) =>
+        new(
             Id: GetRequiredId(item),
             Title: NullIfEmpty(GetString(item, "title")) ?? "Caso sin título",
             Client: NullIfEmpty(GetString(item, "client")),
@@ -73,19 +81,16 @@ public static class PowerAutomateCaseMapper
             Tags: ReadStringCollection(item, "tags", "tag"),
             Impact: ReadObjectString(item, "impact", "ResultadoObtenido_RO"),
             DocumentUrl: NullIfEmpty(GetString(item, "documentUrl")));
-    }
 
     private static string ReadStatus(JsonElement item)
     {
         if (!TryGetProperty(item, "status", out var status)) return "Borrador";
         var normalized = UnwrapJsonString(status);
-
         if (normalized.ValueKind == JsonValueKind.Object &&
             TryGetProperty(normalized, "Value", out var value))
         {
             return NullIfEmpty(value.ToString()) ?? "Borrador";
         }
-
         return NullIfEmpty(normalized.ToString()) ?? "Borrador";
     }
 
@@ -96,13 +101,11 @@ public static class PowerAutomateCaseMapper
     {
         if (!TryGetProperty(item, propertyName, out var value)) return null;
         value = UnwrapJsonString(value);
-
         if (value.ValueKind == JsonValueKind.Object &&
             TryGetProperty(value, nestedPropertyName, out var nested))
         {
             return NullIfEmpty(nested.ToString());
         }
-
         return NullIfEmpty(value.ToString());
     }
 
@@ -120,11 +123,9 @@ public static class PowerAutomateCaseMapper
             {
                 if (entry.ValueKind == JsonValueKind.String)
                     return NullIfEmpty(entry.GetString());
-
                 if (entry.ValueKind == JsonValueKind.Object &&
                     TryGetProperty(entry, objectPropertyName, out var nested))
                     return NullIfEmpty(nested.ToString());
-
                 return null;
             })
             .Where(value => value is not null)
@@ -155,7 +156,6 @@ public static class PowerAutomateCaseMapper
         if (value.ValueKind != JsonValueKind.String) return value;
         var text = value.GetString();
         if (string.IsNullOrWhiteSpace(text)) return value;
-
         try
         {
             using var document = JsonDocument.Parse(text);
@@ -180,7 +180,6 @@ public static class PowerAutomateCaseMapper
         if (!TryGetProperty(element, propertyName, out var value) ||
             value.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
             return null;
-
         return value.ValueKind == JsonValueKind.String
             ? value.GetString()
             : value.ToString();
@@ -195,17 +194,13 @@ public static class PowerAutomateCaseMapper
         {
             foreach (var property in element.EnumerateObject())
             {
-                if (string.Equals(
-                    property.Name,
-                    propertyName,
-                    StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
                 {
                     value = property.Value;
                     return true;
                 }
             }
         }
-
         value = default;
         return false;
     }

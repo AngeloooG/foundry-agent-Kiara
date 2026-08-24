@@ -142,7 +142,12 @@ builder.Services
         builder.Configuration.GetSection(
             PowerAutomateOptions.SectionName
         )
-    );
+    )
+    .Validate(
+        PowerAutomateOptions.IsValid,
+        PowerAutomateOptions.ValidationMessage
+    )
+    .ValidateOnStart();
 
 builder.Services.AddHttpClient();
 
