@@ -9,18 +9,19 @@ type GetAccessToken =
 interface ProblemDetails {
   title?: string;
   detail?: string;
-  status?: number;
 }
 
 export class CasesApiError extends Error {
+  readonly status: number;
+
   constructor(
     message: string,
-    public readonly status: number,
+    status: number,
   ) {
     super(message);
 
-    this.name =
-      "CasesApiError";
+    this.name = "CasesApiError";
+    this.status = status;
 
     Object.setPrototypeOf(
       this,
@@ -30,25 +31,38 @@ export class CasesApiError extends Error {
 }
 
 export class CasesApi {
-  constructor(
-    private readonly apiUrl: string,
-    private readonly getAccessToken:
-      GetAccessToken,
-  ) { }
+  private readonly apiUrl: string;
 
-  async list(
+  private readonly getAccessToken:
+    GetAccessToken;
+
+  constructor(
+    apiUrl: string,
+    getAccessToken: GetAccessToken,
+  ) {
+    this.apiUrl = apiUrl;
+    this.getAccessToken =
+      getAccessToken;
+  }
+
+  list(
     signal?: AbortSignal,
+    refresh = false,
   ): Promise<CasesCollectionApiResponse> {
+    const query = refresh
+      ? "?refresh=true"
+      : "";
+
     return this.request<
       CasesCollectionApiResponse
     >(
-      "/cases",
+      `/cases${query}`,
       signal,
       false,
     );
   }
 
-  async getById(
+  getById(
     id: string,
     signal?: AbortSignal,
   ): Promise<CaseDetailApiResponse | null> {
@@ -88,20 +102,18 @@ export class CasesApi {
       );
     }
 
-    const response =
-      await fetch(
-        `${this.apiUrl}${path}`,
-        {
-          method: "GET",
-          headers: {
-            Accept:
-              "application/json",
-            Authorization:
-              `Bearer ${token}`,
-          },
-          signal,
+    const response = await fetch(
+      `${this.apiUrl}${path}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization:
+            `Bearer ${token}`,
         },
-      );
+        signal,
+      },
+    );
 
     if (
       allowNotFound &&
@@ -111,13 +123,8 @@ export class CasesApi {
     }
 
     if (!response.ok) {
-      const message =
-        await this.readError(
-          response,
-        );
-
       throw new CasesApiError(
-        message,
+        await this.readError(response),
         response.status,
       );
     }
@@ -141,8 +148,8 @@ export class CasesApi {
         return problem.title;
       }
     } catch {
-      // La respuesta podría estar vacía
-      // o no contener JSON válido.
+      // La respuesta puede estar vacía
+      // o no ser JSON.
     }
 
     const messages:
