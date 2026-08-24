@@ -1,8 +1,12 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using WebApp.Api.Models;
 using WebApp.Api.Services;
-using System.Security.Claims;
+using WebApp.Api.Models;
+using WebApp.Api.Endpoints;
+using WebApp.Api.Options;
+using WebApp.Api.Services.Cases;
+
 
 // Load .env file for local development BEFORE building the configuration
 // In production (Docker), Container Apps injects environment variables directly
@@ -51,7 +55,7 @@ builder.Services.AddCors(options =>
         // In development, allow any localhost port for flexibility
         if (builder.Environment.IsDevelopment())
         {
-            policy.SetIsOriginAllowed(origin => 
+            policy.SetIsOriginAllowed(origin =>
             {
                 if (Uri.TryCreate(origin, UriKind.Absolute, out var uri))
                 {
@@ -130,8 +134,36 @@ builder.Services.AddAuthorization(options =>
 
 // Register Foundry Agent Service (v2 Agents API)
 // Uses Azure.AI.Projects SDK which works with v2 Agents API (/agents/ endpoint with human-readable IDs).
+builder.Services.AddMemoryCache();
+
+builder.Services
+    .AddOptions<PowerAutomateOptions>()
+    .Bind(
+        builder.Configuration.GetSection(
+            PowerAutomateOptions.SectionName
+        )
+    )
+    .Validate(
+        PowerAutomateOptions.IsValid,
+        PowerAutomateOptions.ValidationMessage
+    )
+    .ValidateOnStart();
+
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<AgentFrameworkService>();
+
+builder.Services.AddHttpClient<
+    IPowerAutomateCasesClient,
+    PowerAutomateCasesClient
+>();
+
+builder.Services.AddScoped<
+    AgentFrameworkService
+>();
+
+builder.Services.AddScoped<
+    ICasesService,
+    CasesService
+>();
 
 var app = builder.Build();
 
@@ -229,28 +261,28 @@ app.MapPost("/api/chat/stream", async (
     {
         // Validation errors from image/file processing - return 400 Bad Request
         var errorResponse = ErrorResponseFactory.CreateFromException(
-            ex, 
-            400, 
+            ex,
+            400,
             environment.IsDevelopment());
-        
+
         await WriteErrorEvent(
-            httpContext.Response, 
-            errorResponse.Detail ?? errorResponse.Title, 
+            httpContext.Response,
+            errorResponse.Detail ?? errorResponse.Title,
             cancellationToken);
     }
     catch (Exception ex)
     {
         var logger = httpContext.RequestServices.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "Chat stream error: {Message}", ex.Message);
-        
+
         var errorResponse = ErrorResponseFactory.CreateFromException(
-            ex, 
-            500, 
+            ex,
+            500,
             environment.IsDevelopment());
-        
+
         await WriteErrorEvent(
-            httpContext.Response, 
-            errorResponse.Detail ?? errorResponse.Title, 
+            httpContext.Response,
+            errorResponse.Detail ?? errorResponse.Title,
             cancellationToken);
     }
 })
@@ -360,10 +392,10 @@ app.MapGet("/api/agent", async (
     catch (Exception ex)
     {
         var errorResponse = ErrorResponseFactory.CreateFromException(
-            ex, 
-            500, 
+            ex,
+            500,
             environment.IsDevelopment());
-        
+
         return Results.Problem(
             title: errorResponse.Title,
             detail: errorResponse.Detail,
@@ -393,10 +425,10 @@ app.MapGet("/api/agent/info", async (
     catch (Exception ex)
     {
         var errorResponse = ErrorResponseFactory.CreateFromException(
-            ex, 
-            500, 
+            ex,
+            500,
             environment.IsDevelopment());
-        
+
         return Results.Problem(
             title: errorResponse.Title,
             detail: errorResponse.Detail,
@@ -591,6 +623,10 @@ app.MapPost("/api/files/cleanup", async (
 })
 .RequireAuthorization(ScopePolicyName)
 .WithName("CleanupUploadedFiles");
+
+app.MapCasesEndpoints(
+    ScopePolicyName
+);
 
 // Fallback route for SPA - serve index.html for any non-API routes
 app.MapFallbackToFile("index.html");
