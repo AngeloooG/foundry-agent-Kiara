@@ -20,7 +20,7 @@ export function ProcessSection() {
   return (
     <section className={styles.section} aria-labelledby="process-title">
       <SectionHeading
-        eyebrow="Cómo funciona"
+        eyebrow="¿Cómo funciona?"
         title="De una conversación a un activo de conocimiento"
         description="Un flujo guiado que preserva el criterio de los especialistas sin imponer formularios extensos."
       />
