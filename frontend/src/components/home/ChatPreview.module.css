@@ -200,44 +200,6 @@
   font-weight: 800;
 }
 
-.metricCard {
-  position: absolute;
-  z-index: 4;
-  width: 150px;
-  display: grid;
-  gap: 0.15rem;
-  padding: 0.85rem 0.95rem;
-  border: 1px solid var(--kiara-color-border);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--kiara-color-surface) 92%, transparent);
-  box-shadow: var(--kiara-shadow-medium);
-  backdrop-filter: blur(12px);
-}
-
-.metricCard strong {
-  color: var(--kiara-color-brand-accent);
-  font-family: var(--kiara-font-display);
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 1;
-}
-
-.metricCard span {
-  color: var(--kiara-color-text-secondary);
-  font-size: 0.64rem;
-  line-height: 1.35;
-}
-
-.metricCardTop {
-  top: 0;
-  right: -18px;
-}
-
-.metricCardBottom {
-  bottom: 0;
-  left: -32px;
-}
-
 @media (max-width: 1080px) {
   .stage {
     width: min(100%, 680px);
@@ -260,10 +222,6 @@
   .messages {
     min-height: 300px;
     padding: 1rem;
-  }
-
-  .metricCard {
-    display: none;
   }
 
   .documentCard,

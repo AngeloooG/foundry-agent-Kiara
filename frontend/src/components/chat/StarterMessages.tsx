@@ -20,9 +20,8 @@ interface IStarterMessageProps {
 
 // Default starter prompts when none are configured in Microsoft Foundry
 const defaultStarterPrompts = [
-  "How can you help me?",
-  "What are your capabilities?",
-  "Tell me about yourself",
+  "¿Cómo puedo ayudarte?",
+  "¿Cuáles son mis capacidades?"
 ];
 
 export const StarterMessages = ({
@@ -46,7 +45,7 @@ export const StarterMessages = ({
           logoUrl={agentLogo}
         />
         <Subtitle1 className={styles.welcome}>
-          {agentName ? `Hello! I'm ${agentName}` : "Hello! How can I help you today?"}
+          {agentName ? `Hola! Yo soy ${agentName}` : "Hola! ¿Cómo puedo ayudarte hoy?"}
         </Subtitle1>
         {agentDescription && (
           <Body1 className={styles.caption}>{agentDescription}</Body1>

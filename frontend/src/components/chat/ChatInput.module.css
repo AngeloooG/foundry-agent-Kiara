@@ -129,3 +129,36 @@
 .cancelButton {
   margin-left: 0.25rem;
 }
+
+.voiceStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding:
+    0.35rem var(--kiara-space-medium, 0.75rem);
+  color:
+    var(--kiara-color-success);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.voiceStatusDot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background:
+    var(--kiara-color-success);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb,
+      var(--kiara-color-success) 16%,
+      transparent);
+}
+
+.voiceInterimHint {
+  margin-left: auto;
+  color:
+    var(--kiara-color-text-muted);
+  font-size: 0.64rem;
+  font-weight: 500;
+}

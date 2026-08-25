@@ -67,6 +67,20 @@ const focusInput = (containerRef: React.RefObject<HTMLDivElement | null>) => {
   }
 };
 
+const joinInputText = (
+  ...values: Array<
+    string | null | undefined
+  >
+): string => {
+  return values
+    .map(
+      (value) =>
+        value?.trim(),
+    )
+    .filter(Boolean)
+    .join(" ");
+};
+
 export const ChatInput: React.FC<ChatInputProps> = ({
   onSubmit,
   disabled = false,
@@ -90,11 +104,20 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   onDroppedFilesConsumed,
 }) => {
   const [inputText, setInputText] = useState<string>("");
+  const [
+    isVoiceListening,
+    setIsVoiceListening,
+  ] = useState(false);
+  const [
+    interimTranscript,
+    setInterimTranscript,
+  ] = useState("");
+  const voiceBaseTextRef = useRef("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const controlRef = useRef<ImperativeControlPluginRef>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
-  
+
   const toasterId = useId("toaster");
   const { dispatchToast } = useToastController(toasterId);
   const charCounterId = useId("char-counter");
@@ -102,7 +125,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
 
   const charCount = inputText.length;
   const showCounter = charCount >= CHAR_WARNING_THRESHOLD;
-  
+
   const getCounterStyle = () => {
     if (charCount >= CHAR_DANGER_THRESHOLD) return counterStyles.danger;
     if (charCount >= CHAR_WARNING_THRESHOLD) return counterStyles.warning;
@@ -116,7 +139,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       const timer = setTimeout(() => focusInput(inputContainerRef), 100);
       return () => clearTimeout(timer);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only on mount
 
   // Restore focus after message is sent (when status changes from disabled back to enabled)
@@ -221,7 +244,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    
+
     // Validate file count first
     const countValidation = validateFileCount(files, selectedFiles.length);
     if (!countValidation.valid) {
@@ -256,7 +279,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     if (validFiles.length > 0) {
       setSelectedFiles(prev => [...prev, ...validFiles]);
     }
-    
+
     // Reset input value so same file can be selected again
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -331,122 +354,234 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     }
   };
 
-  const handleVoiceTranscript = (transcript: string) => {
-    const newText = inputText ? `${inputText} ${transcript}` : transcript;
-    setInputText(newText);
-    controlRef.current?.setInputText(newText);
-    focusInput(inputContainerRef);
+  const handleVoiceListeningChange = (
+    listening: boolean,
+  ) => {
+    setIsVoiceListening(
+      listening,
+    );
+
+    if (listening) {
+      voiceBaseTextRef.current =
+        inputText.trim();
+
+      setInterimTranscript(
+        "",
+      );
+    }
+  };
+
+  const handleInterimTranscript = (
+    transcript: string,
+  ) => {
+    setInterimTranscript(
+      transcript,
+    );
+
+    if (!transcript.trim()) {
+      return;
+    }
+
+    const previewText =
+      joinInputText(
+        voiceBaseTextRef.current,
+        transcript,
+      );
+
+    setInputText(
+      previewText,
+    );
+
+    controlRef.current
+      ?.setInputText(
+        previewText,
+      );
+  };
+
+  const handleVoiceTranscript = (
+    transcript: string,
+  ) => {
+    const finalText =
+      joinInputText(
+        voiceBaseTextRef.current,
+        transcript,
+      );
+
+    setInputText(
+      finalText,
+    );
+
+    setInterimTranscript(
+      "",
+    );
+
+    setIsVoiceListening(
+      false,
+    );
+
+    voiceBaseTextRef.current =
+      "";
+
+    controlRef.current
+      ?.setInputText(
+        finalText,
+      );
+
+    focusInput(
+      inputContainerRef,
+    );
   };
 
   return (
     <>
       <Toaster toasterId={toasterId} position="top-end" />
       <div className={styles.chatInputContainer} onPaste={handlePaste} onKeyDown={handleKeyDown} ref={inputContainerRef}>
-        <FilePreview 
+        <FilePreview
           files={selectedFiles}
           onRemove={handleRemoveFile}
           disabled={disabled}
         />
         <div className={styles.inputWrapper}>
-        <ChatInputFluent
-          aria-label="Chat Input"
-          aria-describedby={showCounter ? charCounterId : undefined}
-          charactersRemainingMessage={() => ``}
-          disabled={disabled}
-          history={true}
-          onChange={(_, data) => setInputText(data.value)}
-          onSubmit={handleSubmit}
-          placeholderValue={placeholder}
-        >
-          <ImperativeControlPlugin ref={controlRef} />
-        </ChatInputFluent>
-        {showCounter && (
-          <div className={counterStyles.container} id={charCounterId}>
-            <Text className={`${counterStyles.text} ${getCounterStyle()}`}>
-              {charCount} / {CHAR_MAX_RECOMMENDED} characters (recommended limit)
-            </Text>
-          </div>
-        )}
-        {pendingMessages.length > 0 && onDequeueMessage && (
-          <MessageQueue messages={pendingMessages} onRemove={onDequeueMessage} />
-        )}
-        <div className={styles.buttonRow}>
-          <div className={styles.actionButtons}>
-            <Button
-              appearance="subtle"
-              icon={<Attach24Regular />}
-              onClick={handleAttachClick}
-              disabled={disabled}
-              aria-label="Attach files"
-            />
-            <Button
-              appearance="subtle"
-              icon={<Stop24Regular />}
-              onClick={isEditing ? onCancelEdit : handleCancelStream}
-              disabled={!isStreaming && !isEditing}
-              aria-label={isEditing ? "Cancel edit" : "Cancel response"}
-              title={isEditing ? "Cancel edit" : undefined}
-              className={styles.cancelButton}
-            />
-            <VoiceInput
-              onTranscript={handleVoiceTranscript}
-              disabled={disabled}
-            />
-            {onNewChat && (
+          <ChatInputFluent
+            aria-label="Chat Input"
+            aria-describedby={showCounter ? charCounterId : undefined}
+            charactersRemainingMessage={() => ``}
+            disabled={disabled}
+            history={true}
+            onChange={(_, data) => setInputText(data.value)}
+            onSubmit={handleSubmit}
+            placeholderValue={placeholder}
+          >
+            <ImperativeControlPlugin ref={controlRef} />
+          </ChatInputFluent>
+          {isVoiceListening && (
+            <div
+              className={
+                styles.voiceStatus
+              }
+              role="status"
+              aria-live="polite"
+            >
+              <span
+                className={
+                  styles.voiceStatusDot
+                }
+                aria-hidden="true"
+              />
+
+              <span>
+                Escuchando y transcribiendo...
+              </span>
+
+              {interimTranscript && (
+                <span
+                  className={
+                    styles.voiceInterimHint
+                  }
+                >
+                  Voz en curso
+                </span>
+              )}
+            </div>
+          )}
+          {showCounter && (
+            <div className={counterStyles.container} id={charCounterId}>
+              <Text className={`${counterStyles.text} ${getCounterStyle()}`}>
+                {charCount} / {CHAR_MAX_RECOMMENDED} characters (recommended limit)
+              </Text>
+            </div>
+          )}
+          {pendingMessages.length > 0 && onDequeueMessage && (
+            <MessageQueue messages={pendingMessages} onRemove={onDequeueMessage} />
+          )}
+          <div className={styles.buttonRow}>
+            <div className={styles.actionButtons}>
               <Button
                 appearance="subtle"
-                icon={<ChatAdd24Regular />}
-                onClick={onNewChat}
-                disabled={disabled || !hasMessages}
-                aria-label="New chat"
+                icon={<Attach24Regular />}
+                onClick={handleAttachClick}
+                disabled={disabled}
+                aria-label="Attach files"
               />
-            )}
-            <Menu>
-              <MenuTrigger disableButtonEnhancement>
+              <Button
+                appearance="subtle"
+                icon={<Stop24Regular />}
+                onClick={isEditing ? onCancelEdit : handleCancelStream}
+                disabled={!isStreaming && !isEditing}
+                aria-label={isEditing ? "Cancel edit" : "Cancel response"}
+                title={isEditing ? "Cancel edit" : undefined}
+                className={styles.cancelButton}
+              />
+              <VoiceInput
+                onTranscript={
+                  handleVoiceTranscript
+                }
+                onInterimTranscript={
+                  handleInterimTranscript
+                }
+                onListeningChange={
+                  handleVoiceListeningChange
+                }
+                disabled={
+                  disabled ||
+                  isStreaming
+                }
+              />
+              {onNewChat && (
                 <Button
                   appearance="subtle"
-                  icon={<MoreHorizontal24Regular />}
-                  aria-label="More options"
+                  icon={<ChatAdd24Regular />}
+                  onClick={onNewChat}
+                  disabled={disabled || !hasMessages}
+                  aria-label="New chat"
                 />
-              </MenuTrigger>
-              <MenuPopover>
-                <MenuList>
-                  {onToggleSidebar && (
-                    <MenuItem icon={<History24Regular />} onClick={onToggleSidebar} disabled={disabled}>
-                      Conversation history
-                    </MenuItem>
-                  )}
-                  {onExportConversation && (
-                    <MenuItem icon={<ArrowDownload24Regular />} onClick={onExportConversation} disabled={disabled || !hasMessages}>
-                      Export as Markdown
-                    </MenuItem>
-                  )}
-                  {onShowShortcuts && (
-                    <MenuItem icon={<Keyboard24Regular />} onClick={onShowShortcuts}>
-                      Keyboard shortcuts
-                    </MenuItem>
-                  )}
-                  {onOpenSettings && (
-                    <MenuItem icon={<Settings24Regular />} onClick={onOpenSettings} disabled={disabled}>
-                      Settings
-                    </MenuItem>
-                  )}
-                </MenuList>
-              </MenuPopover>
-            </Menu>
+              )}
+              <Menu>
+                <MenuTrigger disableButtonEnhancement>
+                  <Button
+                    appearance="subtle"
+                    icon={<MoreHorizontal24Regular />}
+                    aria-label="More options"
+                  />
+                </MenuTrigger>
+                <MenuPopover>
+                  <MenuList>
+                    {onToggleSidebar && (
+                      <MenuItem icon={<History24Regular />} onClick={onToggleSidebar} disabled={disabled}>
+                        Conversation history
+                      </MenuItem>
+                    )}
+                    {onExportConversation && (
+                      <MenuItem icon={<ArrowDownload24Regular />} onClick={onExportConversation} disabled={disabled || !hasMessages}>
+                        Export as Markdown
+                      </MenuItem>
+                    )}
+                    {onShowShortcuts && (
+                      <MenuItem icon={<Keyboard24Regular />} onClick={onShowShortcuts}>
+                        Keyboard shortcuts
+                      </MenuItem>
+                    )}
+                    {onOpenSettings && (
+                      <MenuItem icon={<Settings24Regular />} onClick={onOpenSettings} disabled={disabled}>
+                        Settings
+                      </MenuItem>
+                    )}
+                  </MenuList>
+                </MenuPopover>
+              </Menu>
+            </div>
           </div>
         </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          style={{ display: 'none' }}
+          onChange={handleFileSelect}
+          accept="image/*,.pdf,.txt,.md,.csv,.json,.html,.xml"
+          aria-label="Upload files"
+        />
       </div>
-      <input
-        ref={fileInputRef}
-        type="file"
-        multiple
-        style={{ display: 'none' }}
-        onChange={handleFileSelect}
-        accept="image/*,.pdf,.txt,.md,.csv,.json,.html,.xml"
-        aria-label="Upload files"
-      />
-    </div>
     </>
   );
 };

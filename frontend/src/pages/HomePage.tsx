@@ -3,10 +3,9 @@ import { ChatPreview } from "~/components/home/ChatPreview";
 import { FinalCallToAction } from "~/components/home/FinalCallToAction";
 import { HomeFooter } from "~/components/home/HomeFooter";
 import { HomeHero } from "~/components/home/HomeHero";
-import { MetricsSection } from "~/components/home/MetricsSection";
+{/* import { MetricsSection } from "~/components/home/MetricsSection"; */}
 import { ProblemSection } from "~/components/home/ProblemSection";
 import { ProcessSection } from "~/components/home/ProcessSection";
-import { RecentCasesSection } from "~/components/home/RecentCasesSection";
 import styles from "./HomePage.module.css";
 
 export function HomePage() {
@@ -24,9 +23,8 @@ export function HomePage() {
 
       <ProblemSection />
       <ProcessSection />
-      <MetricsSection />
+      {/*<MetricsSection />*/}
       <BenefitsSection />
-      <RecentCasesSection />
       <FinalCallToAction />
       <HomeFooter />
     </main>

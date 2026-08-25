@@ -1,98 +1,403 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { Button, Toast, ToastTitle, Toaster, useId, useToastController } from '@fluentui/react-components';
-import { MicRegular, MicOffRegular } from '@fluentui/react-icons';
-import styles from './VoiceInput.module.css';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  Button,
+  Toast,
+  ToastTitle,
+  Toaster,
+  useId,
+  useToastController,
+} from "@fluentui/react-components";
+import {
+  MicOffRegular,
+  MicRegular,
+} from "@fluentui/react-icons";
+import styles from "./VoiceInput.module.css";
 
 interface VoiceInputProps {
-  onTranscript: (text: string) => void;
+  onTranscript:
+  (text: string) => void;
+
+  onInterimTranscript?:
+  (text: string) => void;
+
+  onListeningChange?:
+  (isListening: boolean) => void;
+
   disabled?: boolean;
 }
 
-export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript, disabled = false }) => {
-  const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+function joinTranscripts(
+  ...values: Array<
+    string | null | undefined
+  >
+): string {
+  return values
+    .map((value) => value?.trim())
+    .filter(Boolean)
+    .join(" ");
+}
+
+function getVoiceErrorMessage(
+  error: string,
+): string {
+  const messages:
+    Record<string, string> = {
+    "not-allowed":
+      "El acceso al micrófono fue denegado. Permite el uso del micrófono desde la configuración del sitio.",
+
+    "service-not-allowed":
+      "El servicio de reconocimiento de voz está bloqueado por el navegador o por una política de la organización.",
+
+    "no-speech":
+      "No se detectó voz. Inténtalo nuevamente.",
+
+    "audio-capture":
+      "No se encontró un micrófono disponible o no fue posible capturar el audio.",
+
+    network:
+      "El servicio de reconocimiento de voz del navegador no está disponible. Revisa la conexión o las políticas del navegador.",
+
+    "language-not-supported":
+      "El idioma configurado no está disponible para el reconocimiento de voz.",
+  };
+
+  return (
+    messages[error] ??
+    `No fue posible procesar la entrada de voz (${error}).`
+  );
+}
+
+export function VoiceInput({
+  onTranscript,
+  onInterimTranscript,
+  onListeningChange,
+  disabled = false,
+}: VoiceInputProps) {
+  const [
+    isListening,
+    setIsListening,
+  ] = useState(false);
+
+  const recognitionRef =
+    useRef<
+      SpeechRecognition | null
+    >(null);
+
+  const finalTranscriptRef =
+    useRef("");
+
+  const toasterId =
+    useId("voice-toaster");
+
+  const {
+    dispatchToast,
+  } = useToastController(
+    toasterId,
+  );
+
+  const updateListeningState =
+    useCallback(
+      (
+        nextState: boolean,
+      ) => {
+        setIsListening(nextState);
+
+        onListeningChange?.(
+          nextState,
+        );
+      },
+      [
+        onListeningChange,
+      ],
+    );
+
+  const showToast =
+    useCallback(
+      (
+        message: string,
+        intent:
+          | "error"
+          | "warning" = "error",
+      ) => {
+        dispatchToast(
+          <Toast>
+            <ToastTitle>
+              {message}
+            </ToastTitle>
+          </Toast>,
+          {
+            intent,
+          },
+        );
+      },
+      [
+        dispatchToast,
+      ],
+    );
+
+  const stopListening =
+    useCallback(() => {
+      recognitionRef.current?.stop();
+
+      updateListeningState(false);
+    }, [
+      updateListeningState,
+    ]);
 
   useEffect(() => {
     return () => {
       recognitionRef.current?.abort();
+
+      recognitionRef.current =
+        null;
     };
   }, []);
 
-  const toasterId = useId('voice-toaster');
-  const { dispatchToast } = useToastController(toasterId);
+  const toggleListening =
+    useCallback(() => {
+      if (disabled) {
+        return;
+      }
 
-  const toggleListening = useCallback(() => {
-    const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (
+        recognitionRef.current
+      ) {
+        stopListening();
+        return;
+      }
 
-    if (!SpeechRecognitionCtor) {
-      dispatchToast(
-        <Toast>
-          <ToastTitle>Voice input not supported in this browser</ToastTitle>
-        </Toast>,
-        { intent: 'warning' },
-      );
-      return;
-    }
+      const SpeechRecognitionCtor =
+        window.SpeechRecognition ??
+        window.webkitSpeechRecognition;
 
-    if (recognitionRef.current) {
-      recognitionRef.current.abort();
-      recognitionRef.current = null;
-      setIsListening(false);
-      return;
-    }
+      if (
+        !SpeechRecognitionCtor
+      ) {
+        showToast(
+          "La entrada por voz no está disponible en este navegador.",
+          "warning",
+        );
 
-    const recognition = new SpeechRecognitionCtor();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
+        return;
+      }
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const transcript = event.results?.[0]?.[0]?.transcript;
-      if (transcript) onTranscript(transcript);
-    };
+      const recognition =
+        new SpeechRecognitionCtor();
 
-    recognition.onend = () => {
-      recognitionRef.current = null;
-      setIsListening(false);
-    };
+      recognition.continuous =
+        true;
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      recognitionRef.current = null;
-      setIsListening(false);
+      recognition.interimResults =
+        true;
 
-      const msg =
-        event.error === 'not-allowed' ? 'Microphone access denied. Check browser permissions.' :
-        event.error === 'no-speech'   ? 'No speech detected. Please try again.' :
-        event.error === 'network'     ? 'Network error during voice input.' :
-        undefined;
+      recognition.lang =
+        "es-VE";
 
-      if (msg) {
-        dispatchToast(
-          <Toast><ToastTitle>{msg}</ToastTitle></Toast>,
-          { intent: 'error' },
+      recognition.maxAlternatives =
+        1;
+
+      finalTranscriptRef.current =
+        "";
+
+      recognition.onstart = () => {
+        updateListeningState(true);
+      };
+
+      recognition.onresult = (
+        event:
+          SpeechRecognitionEvent,
+      ) => {
+        let interimTranscript =
+          "";
+
+        for (
+          let index =
+            event.resultIndex;
+
+          index <
+          event.results.length;
+
+          index += 1
+        ) {
+          const result =
+            event.results[index];
+
+          const transcript =
+            result[0]?.transcript
+              ?.trim();
+
+          if (!transcript) {
+            continue;
+          }
+
+          if (result.isFinal) {
+            finalTranscriptRef.current =
+              joinTranscripts(
+                finalTranscriptRef.current,
+                transcript,
+              );
+          }
+          else {
+            interimTranscript =
+              joinTranscripts(
+                interimTranscript,
+                transcript,
+              );
+          }
+        }
+
+        const visibleTranscript =
+          joinTranscripts(
+            finalTranscriptRef.current,
+            interimTranscript,
+          );
+
+        onInterimTranscript?.(
+          visibleTranscript,
+        );
+      };
+
+      recognition.onerror = (
+        event:
+          SpeechRecognitionErrorEvent,
+      ) => {
+        console.error(
+          "[VoiceInput] Recognition error:",
+          {
+            error:
+              event.error,
+            message:
+              event.message,
+          },
+        );
+
+        recognitionRef.current =
+          null;
+
+        updateListeningState(false);
+
+        onInterimTranscript?.(
+          "",
+        );
+
+        if (
+          event.error !==
+          "aborted"
+        ) {
+          showToast(
+            getVoiceErrorMessage(
+              event.error,
+            ),
+          );
+        }
+      };
+
+      recognition.onend = () => {
+        const finalTranscript =
+          finalTranscriptRef.current
+            .trim();
+
+        recognitionRef.current =
+          null;
+
+        updateListeningState(false);
+
+        if (finalTranscript) {
+          onTranscript(
+            finalTranscript,
+          );
+        }
+
+        onInterimTranscript?.(
+          "",
+        );
+
+        finalTranscriptRef.current =
+          "";
+      };
+
+      recognitionRef.current =
+        recognition;
+
+      try {
+        recognition.start();
+      }
+      catch (error) {
+        recognitionRef.current =
+          null;
+
+        updateListeningState(false);
+
+        console.error(
+          "[VoiceInput] Unable to start:",
+          error,
+        );
+
+        showToast(
+          "No fue posible iniciar el reconocimiento de voz.",
         );
       }
-    };
-
-    recognitionRef.current = recognition;
-    recognition.start();
-    setIsListening(true);
-  }, [onTranscript, dispatchToast]);
+    }, [
+      disabled,
+      onInterimTranscript,
+      onTranscript,
+      showToast,
+      stopListening,
+      updateListeningState,
+    ]);
 
   return (
     <>
-      <Toaster toasterId={toasterId} position="top-end" />
+      <Toaster
+        toasterId={toasterId}
+        position="top-end"
+      />
+
       <Button
+        type="button"
         appearance="subtle"
-        icon={isListening ? <MicOffRegular /> : <MicRegular />}
-        onClick={toggleListening}
+        icon={
+          isListening
+            ? (
+              <MicOffRegular />
+            )
+            : (
+              <MicRegular />
+            )
+        }
+        onClick={
+          toggleListening
+        }
         disabled={disabled}
-        aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
-        aria-pressed={isListening}
-        className={`${styles.voiceButton} ${isListening ? styles.listening : ''}`}
+        aria-label={
+          isListening
+            ? "Detener entrada por voz"
+            : "Iniciar entrada por voz"
+        }
+        aria-pressed={
+          isListening
+        }
+        className={
+          `${styles.voiceButton} ${isListening
+            ? styles.listening
+            : ""
+          }`
+        }
       >
-        {isListening && <span className={styles.pulsingDot} />}
+        {isListening && (
+          <span
+            className={
+              styles.pulsingDot
+            }
+            aria-hidden="true"
+          />
+        )}
       </Button>
     </>
   );
-};
+}
