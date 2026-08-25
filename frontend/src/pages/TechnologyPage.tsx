@@ -1,6 +1,5 @@
 import { ArchitectureFlow } from "~/components/technology/ArchitectureFlow";
 import { ArchitecturePrinciples } from "~/components/technology/ArchitecturePrinciples";
-import { DataJourney } from "~/components/technology/DataJourney";
 import { TechnologyCallToAction } from "~/components/technology/TechnologyCallToAction";
 import styles from "./TechnologyPage.module.css";
 
@@ -25,7 +24,6 @@ export function TechnologyPage() {
       </header>
 
       <ArchitectureFlow />
-      <DataJourney />
       <ArchitecturePrinciples />
       <TechnologyCallToAction />
     </main>

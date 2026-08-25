@@ -7,9 +7,9 @@ import { SectionHeading } from "./SectionHeading";
 import styles from "./BenefitsSection.module.css";
 
 const audiences = [
-  { icon: <Lightbulb24Regular />, title: "Especialistas", statement: "Documentar sin interrumpir el ritmo técnico.", benefits: ["Preguntas adaptadas al relato", "Estructura profesional automática", "Lecciones aprendidas preservadas"] },
-  { icon: <Briefcase24Regular />, title: "Ventas y preventa", statement: "Encontrar evidencia para construir propuestas con mayor rapidez.", benefits: ["Casos comparables", "Métricas de impacto", "Soluciones y tecnologías reutilizables"] },
-  { icon: <Building24Regular />, title: "CONSEIN", statement: "Convertir experiencia acumulada en una ventaja organizacional.", benefits: ["Memoria centralizada", "Menor dependencia individual", "Conocimiento trazable y escalable"] },
+  { icon: <Lightbulb24Regular />, title: "Especialistas", statement: "Documentar sin interrumpir el ritmo técnico.", benefits: ["Captura por voz en 2 minutos", "Estructura profesional automática", "Lecciones aprendidas preservadas"] },
+  { icon: <Briefcase24Regular />, title: "Ventas y preventa", statement: "Encontrar evidencia para construir propuestas con mayor rapidez.", benefits: ["Casos comparables", "Evidencia cuantitativa para cierres", "Soluciones y tecnologías reutilizables"] },
+  { icon: <Building24Regular />, title: "CONSEIN", statement: "Convertir experiencia acumulada en una ventaja organizacional.", benefits: ["Memoria centralizada", "Menor dependencia individual", "Biblioteca de activos para RFPs y licitaciones"] },
 ] as const;
 
 export function BenefitsSection() {

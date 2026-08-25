@@ -44,7 +44,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript, disabled =
     const recognition = new SpeechRecognitionCtor();
     recognition.continuous = false;
     recognition.interimResults = false;
-    recognition.lang = 'en-US';
+    recognition.lang = 'es-VE';
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = event.results?.[0]?.[0]?.transcript;
